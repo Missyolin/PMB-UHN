@@ -13,12 +13,9 @@
                     Penerimaan Mahasiswa Baru <br />
                     <span style="color: hsl(196.9, 96.38%, 43.33%)">Universitas HKBP Nommensen Medan</span>
                 </h1>
-                <p class="my-3" style="color: hsl(217, 10%, 50.8%)">
-                    Silahkan melakukan pendaftaran akun terlebih dahulu untuk masuk ke laman pendaftaran
-                </p>
             </div>
 
-            <div class="col-lg-4 mb-5 mb-lg-0">
+            <div class="col-lg-5 mb-5 mb-lg-0">
                 <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
                     <div class="card-body py-3 px-md-5">
                         <h2>Daftar Akun</h2>
@@ -49,11 +46,14 @@
 
                             <!-- Submit button -->
                             <div class="d-grid gap-2" >
-                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="my-3 btn text-white btn-block mb-4" style="background-color: hsl(196.9, 96.38%, 43.33%)">
-                                    Daftarkan Akun
+                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="mt-2 btn text-white btn-block" style="background-color: hsl(196.9, 96.38%, 43.33%)">
+                                    Daftar
                                 </button>
                             </div>
-                            <p class="mb-0">Bila anda sudah memiliki akun, silahkan masuk melalui <a href="{{ route('login') }}">link berikut</a>.</p>
+                            <div class="text-end">
+                                <h7 class="text-danger">Email sudah terdaftar</h7>
+                            </div>
+                            <p class="mt-3 text-center">Sudah punya akun? <a href="{{ route('login') }}" class="text-decoration-none" style="color: hsl(196.76, 97.14%, 41.18%)">Login sekarang</a></p>
                         </form>
                     </div>
                 </div>

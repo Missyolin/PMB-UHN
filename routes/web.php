@@ -21,3 +21,6 @@ Route::get('/login', function(){
     return view('User.login');
 })->name('login');
 
+Route::get('/forgot-password', function(){
+    return view('User.forgotPassword');;
+})->name('forgot-password');
