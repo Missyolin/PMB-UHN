@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\accountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', function() {
-    return view('User.register');
-})->name('register');
+Route::prefix('/register')->group(function () {
+    Route::get('/', function() { return view('User.register');})->name('register');
+    Route::post('/', [accountController::class, 'register'])->name('post-register');
+});
 
 Route::get('/login', function(){
     return view('User.login');
