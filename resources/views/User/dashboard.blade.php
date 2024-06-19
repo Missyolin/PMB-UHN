@@ -26,7 +26,7 @@
                 <h5 class="card-text fw-semibold text-secondary text-center mt-2">Biaya<span class="text-black mx-2">Gratis</span></h5>
                 <!-- Add the button here -->
                 <div class="text-center mt-3">
-                    <button type="button" class="btn text-white text-bold" style="width:20rem; background-color:#049DD9;">Daftar Ujian</button>
+                    <a href="{{ route('formulir-pmb') }}" class="btn text-white text-bold" style="width:20rem; background-color:#049DD9;">Daftar Ujian</a>
                 </div>
             </div>
 

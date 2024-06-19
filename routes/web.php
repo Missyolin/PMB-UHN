@@ -41,4 +41,5 @@ Route::middleware(['web','auth'])->group(function() {
     
         // Route for redirect to dashboard
         Route::get('/dashboard-pmb', function() { return view('User.dashboard');})->name('dashboard');
+        Route::get('/formulir-pmb', function() { return view('User.formulir');})->name('formulir-pmb');
 });
