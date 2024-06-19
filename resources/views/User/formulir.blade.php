@@ -1,6 +1,10 @@
 @extends('Template.header')
 
 @section('content-below')
+<div class="text-secondary text-start my-3 mx-5">
+    <a href="{{ route('dashboard') }}" class="btn"><h6><i class="bi bi-chevron-left"></i> Dashboard</h6><a>
+</div>
+
 <div class="text-secondary text-center my-3">
     <h4>Detail Ujian PMB Bebas Testing</h4>
 </div>
@@ -222,7 +226,7 @@
                     <!-- Data Saudara Kandung di UHN -->
                      <p class="mx-5">*Silahkan isi data berikut bila memiliki saudara kandung yang sedang berkuliah di Universitas HKBP Nommensen</p>
 
-                     <div class="mx-5 my-3 text-start">
+                     <div class="mx-5 mt-3 mb-5 text-start">
                         <div class="row">
                             <div class="col">
                                 <label for="npm1" class="form-label">NPM - 1</label>
@@ -235,8 +239,6 @@
                         </div>
                     </div>
                     
-                    
-
                     
                     <h3><div class="fw-semibold" id="prodi">
                         <div class=" btn btn-sm text-white fw-semibold rounded-pill" style="width: 2rem; height:2rem; background-color:#049DD9;">2</div>
@@ -258,7 +260,7 @@
                     </div>
 
                     <!-- Program Studi -->
-                    <div class="mx-5 my-3 text-start">
+                    <div class="mx-5 mt-3 mb-5 text-start">
                         <div class="row">
                             <div class="col">
                                 <label for="kewarganegaraan" class="form-label">Program Studi - 1</label>
@@ -353,7 +355,7 @@
                     </div>
 
                     <!-- Jumlah Nilai UAN, Jumlah Mapel UAN -->
-                    <div class="mx-5 my-3 text-start">
+                    <div class="mx-5 mt-3 mb-5 text-start">
                         <div class="row">
                             <div class="col">
                                 <label for="nilaiUan" class="form-label">Jumlah Nilai UAN</label>
@@ -634,7 +636,7 @@
 
                     <!-- SUMBIT BUTTON -->
                     <div class="text-end mx-5">
-                        <button type="button" class="btn text-white" style="background-color: #049DD9; width: 24rem;"><h6>Simpan Data</h6></button>
+                        <a href="{{ route('konfirmasi-formulir') }}"><button type="button" class="btn text-white" style="background-color: #049DD9; width: 24rem;"><h6>Simpan Data</h6></button></a>
                     </div>
                 </div>
             </div>

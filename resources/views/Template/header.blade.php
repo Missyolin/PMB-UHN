@@ -12,18 +12,15 @@
                     Hi, Username <i class="bi bi-person-circle"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="mx-3">
-                        @if (Auth::check())
-                            <a class="text-decoration-none text-black" href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Logout  <i class="bi bi-box-arrow-left"></i>
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
-                                @csrf
-                            </form>
-                        @endif
-                    </li>
+                    @if (Auth::check())
+                        <a class="text-decoration-none text-black" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <li class="mx-3"> Logout  <i class="bi bi-box-arrow-left"></i>
+                                <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
+                        </a>
+                    @endif
                 </ul>
             </div>
         </div>
