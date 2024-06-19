@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class accountController extends Controller
@@ -28,7 +30,34 @@ class accountController extends Controller
             'password' => $password,
         ]);
 
-        return view('User.login');
+        return redirect()->route('login');
     }
+
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        try {
+            $credentials = User::where('email', $request->email)->first();
+
+            if ($credentials && Hash::check($request->password, $credentials->password)) {
+                Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+                return redirect()->route('dashboard');
+            }
+
+            return redirect()->route('login')->with('error', 'Kredensial tidak tepat!');
+        } catch (ErrorException $e) {
+            return redirect()->route('login')->with('error', 'Kredensial tidak tepat!');
+        }
+    }
+
+    public function logout()
+    {
+        return redirect()->route('login');
+    }
+
 
 }
