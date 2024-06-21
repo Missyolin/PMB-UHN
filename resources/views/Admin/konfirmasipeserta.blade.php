@@ -1,68 +1,57 @@
-@extends('Template.header')
+@extends('Template.admin')
 
 @section('content-below')
-<div class="text-secondary text-start my-3 mx-5">
-    <a href="{{ route('dashboard') }}" class="btn"><h6><i class="bi bi-chevron-left"></i> Dashboard</h6><a>
+<div class="text-secondary text-start my-3">
+    <a href="{{ route('manajemenpmb-admin') }}" class="btn">
+        <h6><i class="bi bi-chevron-left"></i> Manajemen PMB</h6>
+    </a>
 </div>
 
-<div class="text-secondary text-center my-3">
-    <h4>Detail Ujian PMB Bebas Testing</h4>
-</div>
-
-<!-- DETAILS -->
-<div class="row row-cols-1 row-cols-md-3 g-4 mx-5 my-3 text-center" >
-    <table class="table table-borderless">
-    <thead>
-        <tr>
-        <th scope="col">Periode Pendaftaran</th>
-        <th scope="col">Tanggal Ujian</th>
-        <th scope="col">Tanggal Pengumuman</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td scope="row">5 Februari 2024 - 8 Juni 2024</td>
-        <td>-</td>
-        <td>5 Februari 2024 - 8 Juni 2024</td>
-        </tr>
-    </tbody>
-    <thead>
-        <tr>
-        <th scope="col">Metode Ujian</th>
-        <th scope="col">Biaya Formulir</th>
-        <th scope="col">Lihat Ketentuan PMB</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td scope="row">Bebas Testing</td>
-        <td>Gratis</td>
-        <td>
-            <button type="button" class="btn bg-info-subtle fw-semibold text-info">Lihat</button>
-        </td>
-        </tr>
-    </tbody>
+<!-- CARD -->
+<div class="card">
+  <div class="card-header">
+    Konfirmasi Peserta PMB Bebas Testing
+  </div>
+  <div class="card-body">
+    <div id="passwordHelpBlock" class="form-text">Unduh data pendaftar yang sudah diverifikasi</div>
+    <button class="btn btn-success mb-3"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Unduh Data Pendaftar</button>
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+            <th scope="col">No</th>
+            <th colspan="2">Nama Peserta</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <th scope="row">1</th>
+            <td colspan="2">Missyolin Eunike Rungguni Samosir</td>
+            <td><span class="badge text-bg-success">Terverifikasi</span></td>
+            <td><button data-bs-target="#detailPeserta" data-bs-toggle="modal" class="btn btn-primary">View Detail</button></td>
+            </tr>
+            <tr>
+            <th scope="row">2</th>
+            <td colspan="2">Missyolin Eunike Rungguni Samosir</td>
+            <td><span class="badge text-bg-warning">Belum Terverifikasi</span></td>
+            <td><button class="btn btn-primary">View Detail</button></td>
+            </tr>
+        </tbody>
     </table>
+  </div>
 </div>
 
-<!-- FORMULIR -->
-<div class="card mx-5 my-5">
-    <div class="card-header">
-    <h2 class="card-title mx-5">Formulir Pendaftaran</h2>
-    </div>
-    <div class="card-body">
-        <!-- SCROLLSPY -->
-        <div class="row">
-            <div class="col-4">
-                <div id="list-example" class="list-group mx-5" style="width:20rem;">
-                    <a class="list-group-item list-group-item-action" href="#dataPribadi">Data Pribadi</a>
-                    <a class="list-group-item list-group-item-action" href="#prodi">Pilihan Program Studi</a>
-                    <a class="list-group-item list-group-item-action" href="#asalSekolah">Data Asal Sekolah</a>
-                    <a class="list-group-item list-group-item-action" href="#orangtua">Data Orangtua</a>
-                </div>
-            </div>
-
-            <div class="col-8">
+<!-- MODAL DATA PENDAFTAR -->
+<div class="modal fade" id="detailPeserta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Missyolin Eunike Rungguni Samosir</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">  
+            <div class="">
                 <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                     <h3><div class="fw-semibold" id="dataPribadi">
                         <div class=" btn btn-sm text-white fw-semibold rounded-pill" style="width: 2rem; height:2rem; background-color:#049DD9;">1</div>
@@ -73,12 +62,12 @@
                         <div class="row">
                             <div class="col">
                                 <label for="namaLengkap" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="namaLengkap" name="namaLlengkap">
+                                <input disabled type="text" class="form-control" id="namaLengkap" name="namaLlengkap">
                                 <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
                             </div>
                             <div class="col">
                                 <label for="nik" class="form-label">NIK</label>
-                                <input type="text" class="form-control" id="nik" name="nik">
+                                <input disabled type="text" class="form-control" id="nik" name="nik">
                             </div>
                         </div>
                     </div>
@@ -88,19 +77,12 @@
                         <div class="row">
                             <div class="col">
                                 <label for="alamat" class="form-label">Alamat Lengkap</label>
-                                <input type="text" class="form-control" id="alamat" name="alamat">
+                                <input disabled type="text" class="form-control" id="alamat" name="alamat">
                                 <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
                             </div>
                             <div class="col">
                                 <label for="keterangan" class="form-label">Keterangan Tempat Tinggal</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Bersama Orangtua">Bersama Orangtua</option>
-                                    <option value="Kos">Kos</option>
-                                    <option value="Wali">Wali</option>
-                                    <option value="Asrama">Asrama</option>
-                                    <option value="Panti Asuhan">Panti Asuhan</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="keterangan" name="keterangan" disabled>
                             </div>
                         </div>
                     </div>
@@ -110,21 +92,15 @@
                         <div class="row">
                             <div class="col">
                                 <label for="provinsi" class="form-label">Provinsi</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="provinsi" name="provinsi" disabled>
                             </div>
                             <div class="col">
-                                <label for="keterangan" class="form-label">Kota</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="kota" class="form-label">Kota</label>
+                                <input disabled type="text" class="form-control" id="kota" name="kota" disabled>
                             </div>
                             <div class="col">
-                                <label for="keterangan" class="form-label">Kecamatan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="kecamatan" class="form-label">Kecamatan</label>
+                                <input disabled type="text" class="form-control" id="kecamatan" name="kecamatan" disabled>
                             </div>
                         </div>
                     </div>
@@ -134,19 +110,15 @@
                         <div class="row">
                             <div class="col">
                                 <label for="kabupaten" class="form-label">Kabupaten</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="kabupaten" name="kabupaten" disabled>
                             </div>
                             <div class="col">
                                 <label for="kelurahan" class="form-label">Kelurahan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="kelurahan" name="kelurahan" disabled>
                             </div>
                             <div class="col">
                                 <label for="kodePos" class="form-label">Kode Pos</label>
-                                <input type="text" class="form-control" id="kodePos" name="kodePos">
+                                <input disabled type="text" class="form-control" id="kodePos" name="kodePos">
                             </div>
                         </div>
                     </div>
@@ -156,11 +128,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="noHp" class="form-label">Nomor Handphone</label>
-                                <input type="text" class="form-control" id="noHp" name="noHp">
+                                <input disabled type="text" class="form-control" id="noHp" name="noHp">
                             </div>
                             <div class="col">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" disabled readonly value="{{ Auth::user()->email }}">
+                                <input disabled type="email" class="form-control" id="email" name="email" disabled readonly value="">
                             </div>
                         </div>
                     </div>
@@ -170,11 +142,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="tempatLahir" class="form-label">Tempat Lahir</label>
-                                <input type="text" class="form-control" id="tempatLahir" name="tempatLahir">
+                                <input disabled type="text" class="form-control" id="tempatLahir" name="tempatLahir">
                             </div>
                             <div class="col">
                                 <label for="tanggalLahir" class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir">
+                                <input disabled type="date" class="form-control" id="tanggalLahir" name="tanggalLahir">
                             </div>
                         </div>
                     </div>
@@ -184,17 +156,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="kewarganegaraan" name="kewarganegaraan" disabled>
                             </div>
                             <div class="col">
                                 <label for="statusSipil" class="form-label">Status Sipil</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Menikah">Menikah</option>
-                                    <option value="Belum Menikah">Belum Menikah</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="statusSipil" name="statusSipil" disabled>
                             </div>
                         </div>
                     </div>
@@ -204,37 +170,25 @@
                         <div class="row">
                             <div class="col">
                                 <label for="agama" class="form-label">Agama</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Kristen">Kristen</option>
-                                    <option value="Katholik">Katholik</option>
-                                    <option value="Islam">Islam</option>
-                                    <option value="Budha">Budha</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="agama" name="agama" disabled>
                             </div>
                             <div class="col">
                                 <label for="gereja" class="form-label">Gereja</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="gereja" name="gereja" disabled>
                             </div>
                         </div>
                     </div>
 
                     <!-- Data Saudara Kandung di UHN -->
-                     <p class="mx-5">*Silahkan isi data berikut bila memiliki saudara kandung yang sedang berkuliah di Universitas HKBP Nommensen</p>
-
                      <div class="mx-5 mt-3 mb-5 text-start">
                         <div class="row">
                             <div class="col">
                                 <label for="npm1" class="form-label">NPM - 1</label>
-                                <input type="text" class="form-control" id="npm1" name="npm1">
+                                <input disabled type="text" class="form-control" id="npm1" name="npm1">
                             </div>
                             <div class="col">
                                 <label for="npm2" class="form-label">NPM - 2</label>
-                                <input type="email" class="form-control" id="npm2" name="npm2">
+                                <input disabled type="email" class="form-control" id="npm2" name="npm2">
                             </div>
                         </div>
                     </div>
@@ -249,9 +203,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="fakultas" class="form-label">Fakultas</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="fakultas" name="fakultas" disabled>
                             </div>
                             <div class="col">
 
@@ -263,16 +215,12 @@
                     <div class="mx-5 mt-3 mb-5 text-start">
                         <div class="row">
                             <div class="col">
-                                <label for="kewarganegaraan" class="form-label">Program Studi - 1</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="prodi1" class="form-label">Program Studi - 1</label>
+                                <input disabled type="text" class="form-control" id="prodi1" name="prodi1" disabled>
                             </div>
                             <div class="col">
-                                <label for="statusSipil" class="form-label">Program Studi - 2</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="prodi2" class="form-label">Program Studi - 2</label>
+                                <input disabled type="text" class="form-control" id="prodi2" name="prodi2" disabled>
                                 <div id="passwordHelpBlock" class="form-text">program studi 2 hanya berlaku untuk Fakultas Ekonomi</div>
                             </div>
                         </div>
@@ -289,21 +237,15 @@
                         <div class="row">
                             <div class="col">
                                 <label for="provSekolah" class="form-label">Provinsi</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="provSekolah" name="provSekolah" disabled>
                             </div>
                             <div class="col">
                                 <label for="kotaSekolah" class="form-label">Kota</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="kotaSekolah" name="kotaSekolah" disabled>
                             </div>
                             <div class="col">
                                 <label for="kabSekolah" class="form-label">Kabupaten</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="kabSekolah" name="kabSekolah" disabled>
                             </div>
                         </div>
                     </div>
@@ -313,9 +255,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="asalSekolah" class="form-label">Asal SMA/SMK/MA</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="asalSekolah" name="asalSekolah" disabled>
                             </div>
                         </div>
                     </div>
@@ -325,17 +265,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="jurusan" class="form-label">Jurusan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option val="IPA">IPA</option>
-                                    <option val="IPS">IPS</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="jurusan" name="jurusan" disabled>
                             </div>
                             <div class="col">
-                                <label for="statusSipil" class="form-label">Tahun Lulus</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="tahunLulus" class="form-label">Tahun Lulus</label>
+                                <input disabled type="text" class="form-control" id="tahunLulus" name="tahunLulus" disabled>
                             </div>
                         </div>
                     </div>
@@ -345,11 +279,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="noIjazah" class="form-label">Nomor Ijazah</label>
-                                <input type="text" class="form-control" id="noIjazah" name="noIjazah">
+                                <input disabled type="text" class="form-control" id="noIjazah" name="noIjazah">
                             </div>
                             <div class="col">
                                 <label for="tglIjazah" class="form-label">Tanggal Ijazah</label>
-                                <input type="date" class="form-control" id="tglIjazah" name="tglIjazah">
+                                <input disabled type="date" class="form-control" id="tglIjazah" name="tglIjazah">
                             </div>
                         </div>
                     </div>
@@ -359,11 +293,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="nilaiUan" class="form-label">Jumlah Nilai UAN</label>
-                                <input type="text" class="form-control" id="nilaiUan" name="nilaiUan">
+                                <input disabled type="text" class="form-control" id="nilaiUan" name="nilaiUan">
                             </div>
                             <div class="col">
                                 <label for="mapelUan" class="form-label">Jumlah Mata Pelajaran UAN</label>
-                                <input type="text" class="form-control" id="mapelUan" name="mapelUan">
+                                <input disabled type="text" class="form-control" id="mapelUan" name="mapelUan">
                             </div>
                         </div>
                     </div>
@@ -381,12 +315,12 @@
                         <div class="row">
                             <div class="col">
                                 <label for="namaAyah" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="namaAyah" name="namaAyah">
+                                <input disabled type="text" class="form-control" id="namaAyah" name="namaAyah">
                                 <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
                             </div>
                             <div class="col">
                                 <label for="tlAyah" class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="tlAyah" name="tlAyah">
+                                <input disabled type="date" class="form-control" id="tlAyah" name="tlAyah">
                             </div>
                         </div>
                     </div>
@@ -395,22 +329,12 @@
                     <div class="mx-5 my-3 text-start">
                         <div class="row">
                             <div class="col">
-                                <label for="agama" class="form-label">Agama</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Kristen">Kristen</option>
-                                    <option value="Katholik">Katholik</option>
-                                    <option value="Islam">Islam</option>
-                                    <option value="Budha">Budha</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                </select>
+                                <label for="agamaAyah" class="form-label">Agama</label>
+                                <input disabled type="text" class="form-control" id="agamaAyah" name="agamaAyah" disabled>
                             </div>
                             <div class="col">
-                                <label for="pendidikanTerakhir" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="pendidikanAyah" class="form-label">Pendidikan Terakhir</label>
+                                <input disabled type="text" class="form-control" id="pendidikanAyah" name="pendidikanAyah" disabled>
                             </div>
                         </div>
                     </div>
@@ -420,15 +344,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="pekerjaanAyah" class="form-label">Pekerjaan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="pekerjaanAyah" name="pekerjaanAyah" disabled>
                             </div>
                             <div class="col">
                                 <label for="penghasilanAyah" class="form-label">Rentang Penghasilan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="penghasilanAyah" name="penghasilanAyah" disabled>
                             </div>
                         </div>
                     </div>
@@ -438,15 +358,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="alamatAyah" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamatAyah" name="namaAyah">
+                                <input disabled type="text" class="form-control" id="alamatAyah" name="namaAyah">
                             </div>
                             <div class="col">
                                 <label for="statusAyah" class="form-label">Status</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option val="Masih Hidup">Masih Hidup</option>
-                                    <option val="Meninggal">Meninggal</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="statusAyah" name="statusAyah" disabled>
                             </div>
                         </div>
                     </div>
@@ -456,7 +372,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="noAyah" class="form-label">Nomor Handphone Aktif</label>
-                                <input type="text" class="form-control" id="noAyah" name="noAyah">
+                                <input disabled type="text" class="form-control" id="noAyah" name="noAyah">
                             </div>
                             <div class="col">
                             </div>
@@ -473,12 +389,12 @@
                         <div class="row">
                             <div class="col">
                                 <label for="namaIbu" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="namaIbu" name="namaIbu">
+                                <input disabled type="text" class="form-control" id="namaIbu" name="namaIbu">
                                 <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
                             </div>
                             <div class="col">
                                 <label for="tlIbu" class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="tlIbu" name="tlIbu">
+                                <input disabled type="date" class="form-control" id="tlIbu" name="tlIbu">
                             </div>
                         </div>
                     </div>
@@ -487,22 +403,13 @@
                     <div class="mx-5 my-3 text-start">
                         <div class="row">
                             <div class="col">
-                                <label for="agama" class="form-label">Agama</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Kristen">Kristen</option>
-                                    <option value="Katholik">Katholik</option>
-                                    <option value="Islam">Islam</option>
-                                    <option value="Budha">Budha</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                </select>
+                                <label for="agamaIbu" class="form-label">Agama</label>
+                                <input disabled type="text" class="form-control" id="agamaIbu" name="agamaIbu" disabled>
                             </div>
                             <div class="col">
-                                <label for="pendidikanTerakhir" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="pendidikanIbu" class="form-label">Pendidikan Terakhir</label>
+                                <input disabled type="text" class="form-control" id="pendidikanIbu" name="pendidikanIbu" disabled>
+
                             </div>
                         </div>
                     </div>
@@ -512,15 +419,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="pekerjaanIbu" class="form-label">Pekerjaan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="pekerjaanIbu" name="pekerjaanIbu" disabled>
                             </div>
                             <div class="col">
                                 <label for="penghasilanIbu" class="form-label">Rentang Penghasilan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="penghasilanIbu" name="penghasilanIbu" disabled>
                             </div>
                         </div>
                     </div>
@@ -530,15 +433,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="alamatIbu" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamatIbu" name="namaIbu">
+                                <input disabled type="text" class="form-control" id="alamatIbu" name="namaIbu">
                             </div>
                             <div class="col">
                                 <label for="statusIbu" class="form-label">Status</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option val="Masih Hidup">Masih Hidup</option>
-                                    <option val="Meninggal">Meninggal</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="statusIbu" name="statusIbu" disabled>
                             </div>
                         </div>
                     </div>
@@ -548,7 +447,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="noIbu" class="form-label">Nomor Handphone Aktif</label>
-                                <input type="text" class="form-control" id="noIbu" name="noIbu">
+                                <input disabled type="text" class="form-control" id="noIbu" name="noIbu">
                             </div>
                             <div class="col">
                             </div>
@@ -565,12 +464,12 @@
                         <div class="row">
                             <div class="col">
                                 <label for="namaWali" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="namaWali" name="namaWali">
+                                <input disabled type="text" class="form-control" id="namaWali" name="namaWali">
                                 <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
                             </div>
                             <div class="col">
                                 <label for="tlWali" class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="tlWali" name="tlWali">
+                                <input disabled type="date" class="form-control" id="tlWali" name="tlWali">
                             </div>
                         </div>
                     </div>
@@ -579,22 +478,12 @@
                     <div class="mx-5 my-3 text-start">
                         <div class="row">
                             <div class="col">
-                                <label for="agama" class="form-label">Agama</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                    <option value="Kristen">Kristen</option>
-                                    <option value="Katholik">Katholik</option>
-                                    <option value="Islam">Islam</option>
-                                    <option value="Budha">Budha</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                </select>
+                                <label for="agamaWali" class="form-label">Agama</label>
+                                <input disabled type="text" class="form-control" id="agamaWali" name="agamaWali" disabled>
                             </div>
                             <div class="col">
-                                <label for="pendidikanTerakhir" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <label for="pendidikanWali" class="form-label">Pendidikan Terakhir</label>
+                                <input disabled type="text" class="form-control" id="pendidikanWali" name="pendidikanWali" disabled>
                             </div>
                         </div>
                     </div>
@@ -604,15 +493,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="pekerjaanWali" class="form-label">Pekerjaan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="pekerjaanWali" name="pekerjaanWali" disabled>
                             </div>
                             <div class="col">
                                 <label for="penghasilanWali" class="form-label">Rentang Penghasilan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected hidden></option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="penghasilanWali" name="penghasilanWali" disabled>
                             </div>
                         </div>
                     </div>
@@ -622,25 +507,28 @@
                         <div class="row">
                             <div class="col">
                                 <label for="alamatWali" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamatWali" name="namaWali">
+                                <input disabled type="text" class="form-control" id="alamatWali" name="namaWali">
                             </div>
 
                             <div class="col">
                                 <label for="noWali" class="form-label">Nomor Handphone Aktif</label>
-                                <input type="text" class="form-control" id="noWali" name="noWali">
+                                <input disabled type="text" class="form-control" id="noWali" name="noWali">
                             </div>
                         </div>
                     </div>
 
                     <!-- END OF WALI -->
-
-                    <!-- SUMBIT BUTTON -->
-                    <div class="text-end mx-5">
-                        <a href="{{ route('konfirmasi-formulir') }}"><button type="button" class="btn text-white" style="background-color: #049DD9; width: 24rem;"><h6>Simpan Data</h6></button></a>
-                    </div>
                 </div>
             </div>
+        
+    
+            
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success">Verifikasi</button>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 @endsection

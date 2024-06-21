@@ -1,7 +1,10 @@
 @extends('Template.header')
 
 @section('content-below')
-
+<div class="text-secondary text-start my-3 mx-5">
+    <a href="{{ route('dashboard') }}" class="btn"><h6><i class="bi bi-chevron-left"></i> Dashboard</h6><a>
+</div>
+ 
 <div class="card mx-5 my-5">
     <div class="card-body">
         <div class="mx-5 my-3 text-center">

@@ -45,7 +45,11 @@ class accountController extends Controller
 
             if ($credentials && Hash::check($request->password, $credentials->password)) {
                 Auth::attempt(['email' => $request->email, 'password' => $request->password]);
-                return redirect()->route('dashboard');
+                if (Auth::user()->username === 'Admin') {
+                    return redirect()->route('dashboard-admin');
+                } else {
+                    return redirect()->route('dashboard');
+                }
             }
 
             return redirect()->route('login')->with('error', 'Kredensial tidak tepat!');

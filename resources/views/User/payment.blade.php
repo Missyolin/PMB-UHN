@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col text-center">
                     <h6 class="text-secondary">Email Pendaftar</h6>
-                    <h6>missyolin36@gmail.com</h6>
+                    <h6>{{ Auth::user()->email }}</h6>
                 </div>
                 <div class="col text-center">
                     <h6 class="text-secondary">Jenis Ujian</h6>

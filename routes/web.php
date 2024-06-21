@@ -39,9 +39,16 @@ Route::get('/forgot-password', function(){return view('User.forgotPassword');})-
     
 Route::middleware(['web','auth'])->group(function() {
     
-        // Route for redirect to dashboard
+        // USER
         Route::get('/dashboard-pmb', function() { return view('User.dashboard');})->name('dashboard');
         Route::get('/formulir-pmb', function() { return view('User.formulir');})->name('formulir-pmb');
         Route::get('/konfirmasi-formulir', function() { return view('User.konfirmasi');})->name('konfirmasi-formulir');
         Route::get('/pembelian-formulir', function() { return view('User.payment');})->name('pembelian-formulir');
+
+        // ADMIN
+        Route::middleware(['admin'])->group(function() {
+            Route::get('/dashboard-admin-pmb', function() { return view('Admin.dashboard');})->name('dashboard-admin');
+            Route::get('/manajemen-pmb', function() { return view('Admin.manajemenpmb');})->name('manajemenpmb-admin');            
+            Route::get('/konfirmasi-peserta-pmb', function() { return view('Admin.konfirmasipeserta');})->name('konfirmasi-admin');            
+        });
 });
