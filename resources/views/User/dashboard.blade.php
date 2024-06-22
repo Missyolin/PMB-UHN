@@ -8,122 +8,91 @@
 </div>
 
 <!-- Cards -->
-<div class="row row-cols-1 row-cols-md-3 g-4 mx-5 my-3" >
-
-    <div class="col">
-        <div class="card" style="position: relative;">
-            <img src="{{ asset('images/bg-open.png') }}" class="card-img-top" alt="...">
-
-            <div class="card-img-overlay text-center text-white mt-4" style="">
-                <h4 class="card-title fw-bolder">PMB Bebas Testing<br><span class="fw-light">Gelombang I</span></h4>
-            </div>
-
-            <div class="card-body" style="z-index: 2; position: relative;">
-                <p class="card-text fw-semibold text-secondary p-3 rounded" style="background-color:#E7F1F5;">Periode Pendaftaran<br><span class="text-black">5 Februari 2024 - 8 Juni 2024</span></p>
-                <p class="card-text fw-semibold text-secondary px-3">Tanggal Ujian<br><span class="text-black">-</span></p>
-                <p class="card-text fw-semibold text-secondary p-3 rounded" style="background-color:#E7F1F5;">Tanggal Pengumuman<br><span class="text-black">Realtime</span></p>
-                <div class="row">
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">Bebas Testing</span></p>
-                    </div>
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Gratis</span></p>
-                    </div>
-                </div>
-                <hr>
-                <!-- Add the button here -->
-                <div class="text-center mt-3">
-                    <a href="{{ route('formulir-pmb') }}" class="btn text-white text-bold" style="width:20rem; background-color:#049DD9;">Daftar Ujian</a>
-                </div>
-            </div>
-
+@foreach($tahun_ajaran as $tahun)
+    @php
+        $hiddenUjianCount = $tahun->jenisUjian->where('flag_is_ujian_hidden', 1)->count();
+        $totalUjianCount = $tahun->jenisUjian->count();
+    @endphp
+    @if($totalUjianCount == 0 || $hiddenUjianCount == $totalUjianCount)
+        <div class="alert alert-warning m-5 text-center" role="alert">
+            <i class="bi bi-info-circle"></i><br>Saat ini sedang tidak ada ujian penerimaan mahasiswa baru Universitas HKBP Nommensen
         </div>
-    </div>
-
-
-    <div class="col">
-        <div class="card">
-            <img src="{{ asset('images/bg-open.png') }}" class="card-img-top" alt="...">
-            <div class="card-img-overlay text-center mt-4">
-                <h4 class="card-title fw-bolder text-white">PMB Reguler<br><span class="fw-light">Gelombang I<span></h4>
-            </div>
-
-            <div class="card-body" style="z-index: 2; position: relative;">
-                <p class="card-text fw-semibold text-secondary p-3 rounded" style="background-color:#E7F1F5;">Periode Pendaftaran<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary px-3">Tanggal Ujian<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary p-3 rounded" style="background-color:#E7F1F5;">Tanggal Pengumuman<br><span class="text-black">Realtime</span></p>
-                <div class="row">
+    @else
+        <div class="row row-cols-1 row-cols-md-3 g-4 mx-5 my-3" >
+            @foreach($tahun->jenisUjian as $ujian)
+                @if(!$ujian->flag_is_ujian_hidden)
                     <div class="col">
-                        <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">Testing</span></p>
-                    </div>
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary ">Biaya<br><span class="text-black">Rp 250.000</span></p>
-                    </div>
-                </div>
-                <hr>
-                <!-- Add the button here -->
-                <div class="text-center mt-3">
-                    <a href="{{ route('pembelian-formulir') }}" type="button" class="btn text-white text-bold" style="width:20rem;background-color:#049DD9;">Daftar Ujian</a>
-                </div>
-            </div>
+                        <div class="card" style="position: relative;">
+                            @if($ujian->flag_is_ujian_opened)
+                            <img src="{{ asset('images/bg-open.png') }}" class="card-img-top" alt="...">
+                            @else
+                            <img src="{{ asset('images/bg-close.png') }}" class="card-img-top" alt="...">
+                            @endif
 
+                            @if($ujian->flag_is_ujian_opened)
+                            <div class="card-img-overlay text-center text-white mt-4" style="">
+                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">{{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
+                            </div>
+                            @else
+                            <div class="card-img-overlay text-center text-black mt-4" style="">
+                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">{{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
+                            </div>
+                            @endif
+
+                            <div class="card-body" style="z-index: 2; position: relative;">
+                                @if($ujian->flag_is_ujian_opened)
+                                <div class=" rounded" style="background-color:#E7F1F5;">
+                                    <p class="card-text fw-semibold text-secondary p-3">Periode Pendaftaran<br><span class="text-black">{{ $ujian->tanggal_buka_pendaftaran_formatted }} - {{ $ujian->tanggal_tutup_pendaftaran_formatted }}</span></p>
+                                </div>
+                                @else
+                                <div class=" rounded bg-body-secondary">
+                                    <p class="card-text fw-semibold text-secondary p-3">Periode Pendaftaran<br><span class="text-black">{{ $ujian->tanggal_buka_pendaftaran_formatted }} - {{ $ujian->tanggal_tutup_pendaftaran_formatted }}</span></p>
+                                </div>
+                                @endif
+                                
+                                @if($ujian->metode_ujian === 'Bebas Testing')
+                                <p class="card-text fw-semibold text-secondary px-3 py-2">Tanggal Ujian<br><span class="text-black">-</span></p>
+                                @else
+                                <p class="card-text fw-semibold text-secondary px-3 py-2">Tanggal Ujian<br><span class="text-black">{{ $ujian->tanggal_buka_pendaftaran_formatted }} - {{ $ujian->tanggal_tutup_pendaftaran_formatted }}</span></p>
+                                @endif
+                                
+                                @if($ujian->flag_is_ujian_opened)
+                                <div class=" rounded" style="background-color:#E7F1F5;">
+                                    <p class="card-text fw-semibold text-secondary p-3 rounded" style="background-color:#E7F1F5;">Tanggal Pengumuman<br><span class="text-black">{{$ujian->waktu_pengumuman}}</span></p>
+                                </div>
+                                @else
+                                <div class="rounded bg-body-secondary ">
+                                    <p class="card-text fw-semibold text-secondary p-3 rounded">Tanggal Pengumuman<br><span class="text-black">{{$ujian->waktu_pengumuman}}</span></p>
+                                </div>
+                                @endif
+
+                                <div class="row py-2">
+                                    <div class="col">
+                                        <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">{{$ujian->metode_ujian}}</span></p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Gratis</span></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <!-- Add the button here -->
+                                @if($ujian->flag_is_ujian_opened)
+                                <div class="text-center mt-3">
+                                    <a href="{{ route('formulir-pmb') }}" class="btn text-white text-bold" style="width:20rem; background-color:#049DD9;">Daftar Ujian</a>
+                                </div>
+                                @else
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-secondary"  style="width:20rem;" disabled>Daftar Ujian</button>
+                                </div>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                @endif
+            @endforeach 
         </div>
-    </div>
-
-    <div class="col">
-        <div class="card">
-            <img src="{{ asset('images/bg-close.png') }}" class="card-img-top" alt="...">
-            <div class="card-img-overlay text-center mt-4">
-                <h4 class="card-title fw-bolder text-black">PMB Khusus Fakultas Kedokteran<br><span class="fw-light">Gelombang I<span></h4>
-            </div>
-
-            <div class="card-body" style="z-index: 2; position: relative;">
-                <p class="card-text fw-semibold text-secondary p-3 rounded bg-body-secondary">Periode Pendaftaran<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary px-3">Tanggal Ujian<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary p-3 rounded bg-body-secondary">Tanggal Pengumuman<br><span class="text-black">Realtime</span></p>
-                <div class="row">
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">Testing</span></p>
-                    </div>
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary ">Biaya<br><span class="text-black">Rp 250.000</span></p>
-                    </div>
-                </div>
-                <hr>                <!-- Add the button here -->
-                <div class="text-center mt-3">
-                    <button type="button" class="btn btn-secondary text-white text-bold" style="width:20rem;" disabled>Daftar Ujian</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card">
-            <img src="{{ asset('images/bg-close.png') }}" class="card-img-top" alt="...">
-            <div class="card-img-overlay text-center mt-4">
-                <h4 class="card-title fw-bolder text-black">PMB Khusus Fakultas Kedokteran<br><span class="fw-light">Gelombang I<span></h4>
-            </div>
-
-            <div class="card-body" style="z-index: 2; position: relative;">
-                <p class="card-text fw-semibold text-secondary p-3 rounded bg-body-secondary">Periode Pendaftaran<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary px-3">Tanggal Ujian<br><span class="text-black">10 Juni 2024 - 8 Juli 2024</span></p>
-                <p class="card-text fw-semibold text-secondary p-3 rounded bg-body-secondary">Tanggal Pengumuman<br><span class="text-black">Realtime</span></p>
-                <div class="row">
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">Testing</span></p>
-                    </div>
-                    <div class="col">
-                        <p class="card-text fw-semibold text-secondary ">Biaya<br><span class="text-black">Rp 250.000</span></p>
-                    </div>
-                </div>
-                <hr>                <!-- Add the button here -->
-                <div class="text-center mt-3">
-                    <button type="button" class="btn btn-secondary text-white text-bold" style="width:20rem;" disabled>Daftar Ujian</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
+    @endif
+@endforeach
 
 @endsection

@@ -16,4 +16,9 @@ class TahunAjaran extends Model
     ];
 
     protected $primaryKey = 'id_tahun_ajaran';
+
+    public function jenisUjian()
+    {
+        return $this->hasMany(JenisUjian::class, 'tahun_ajaran', 'id_tahun_ajaran');
+    }
 }

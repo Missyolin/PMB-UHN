@@ -24,4 +24,9 @@ class JenisUjian extends Model
     ];
 
     protected $primaryKey = 'id_jenis_ujian';
+
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran', 'id_tahun_ajaran');
+    }
 }

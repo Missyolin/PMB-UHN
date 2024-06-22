@@ -16,8 +16,21 @@
                     </li>
                     
                     <li>
-                        <a href="{{route('manajemenpmb-admin')}}" class="nav-link {{ Request::is('manajemen-pmb') ? ' active' : '' }} px-2 align-middle">
-                            <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Manajemen PMB</span> </a>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link {{ Request::is('manajemen-pmb*') ? 'active' : '' }} px-2 align-middle">
+                            <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Manajemen PMB</span>
+                        </a>
+                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{{ route('manajemenpmb-admin') }}" class="nav-link px-2 my-1 {{ Request::is('manajemen-pmb-tahun-ajaran') ? 'active' : '' }}">
+                                    <span class="d-none d-sm-inline">Tambah Tahun Ajaran</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('kelola-ujian') }}" class="nav-link px-2 {{ Request::is('manajemen-pmb-kelola-ujian') ? 'active' : '' }}">
+                                    <span class="d-none d-sm-inline">Kelola Ujian</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
                 <hr>
