@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\accountController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,14 @@ Route::middleware(['web','auth'])->group(function() {
         // ADMIN
         Route::middleware(['admin'])->group(function() {
             Route::get('/dashboard-admin-pmb', function() { return view('Admin.dashboard');})->name('dashboard-admin');
-            Route::get('/manajemen-pmb', function() { return view('Admin.manajemenpmb');})->name('manajemenpmb-admin');            
+
+            // WELCOME TO MANAJEMEN PMB
+            Route::get('/manajemen-pmb', [AdminController::class, 'getManajemenPage'])->name('manajemenpmb-admin');            
+            Route::post('/manajemen-pmb-tambah-tahunAjaran', [AdminController::class, 'addTahunAjaran'])->name('add-tahun-ajaran');            
+            Route::post('/manajemen-pmb-update-tahunAjaran/{id}', [AdminController::class, 'updateTahunAjaran'])->name('update-tahun-ajaran'); 
+            
+            Route::post('/manajemen-pmb-tambah-ujian', [AdminController::class, 'addUjian'])->name('add-ujian');
+
             Route::get('/konfirmasi-peserta-pmb', function() { return view('Admin.konfirmasipeserta');})->name('konfirmasi-admin');            
         });
 });
