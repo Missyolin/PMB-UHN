@@ -35,7 +35,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function getFormulir()
+    public function getFormulir($id)
     {
         Carbon::setLocale('id'); 
         
@@ -44,13 +44,29 @@ class UserController extends Controller
         $districts = District::all();
         $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
 
+        // Filter jenis ujian berdasarkan ID
+        $selectedUjian = null;
         foreach ($tahun_ajaran as $tahun) {
             foreach ($tahun->jenisUjian as $ujian) {
-                $ujian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
-                $ujian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                if ($ujian->id_jenis_ujian == $id) {
+                    $selectedUjian = $ujian;
+                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                    break 2;
+                }
             }
         }
 
-        return view('User.formulir', compact('provinces', 'regencies', 'districts', 'tahun_ajaran'));
+        if (!$selectedUjian) {
+            abort(404, 'Ujian tidak ditemukan');
+        }
+
+        return view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran'));
     }
+
+    public function submitFormulir(Request $request)
+    {
+        
+    }
+
 }

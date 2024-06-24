@@ -5,10 +5,10 @@
     <a href="{{ route('dashboard') }}" class="btn"><h6><i class="bi bi-chevron-left"></i> Dashboard</h6><a>
 </div>
 
-@foreach($tahun_ajaran as $tahun)
-    @foreach($tahun->jenisUjian as $ujian)
+
+
         <div class="text-secondary text-center my-3">
-            <h4>Detail Ujian {{$ujian->nama_ujian}}</h4>
+            <h4>Detail Ujian {{$selectedUjian->nama_ujian}}</h4>
         </div>
 
         <!-- DETAILS -->
@@ -23,9 +23,13 @@
             </thead>
             <tbody>
                 <tr>
-                <td scope="row">{{ $ujian->tanggal_buka_pendaftaran_formatted }} - {{ $ujian->tanggal_buka_pendaftaran_formatted }}</td>
+                <td scope="row">{{ $selectedUjian->tanggal_buka_pendaftaran_formatted }} - {{ $selectedUjian->tanggal_tutup_pendaftaran_formatted }}</td>
+                @if($selectedUjian->metode_ujian == 'Testing')
+                <td scope="row">{{ $selectedUjian->tanggal_buka_pendaftaran_formatted }} - {{ $selectedUjian->tanggal_tutup_pendaftaran_formatted }}</td>
+                @else
                 <td>-</td>
-                <td>{{$ujian->waktu_pengumuman}}</td>
+                @endif
+                <td>{{$selectedUjian->waktu_pengumuman}}</td>
                 </tr>
             </tbody>
             <thead>
@@ -37,7 +41,7 @@
             </thead>
             <tbody>
                 <tr>
-                <td scope="row">{{$ujian->metode_ujian}}</td>
+                <td scope="row">{{$selectedUjian->metode_ujian}}</td>
                 <td>Gratis</td>
                 <td>
                     <button type="button" class="btn bg-info-subtle fw-semibold text-info">Lihat</button>
@@ -53,6 +57,8 @@
             <h2 class="card-title mx-5">Formulir Pendaftaran</h2>
             </div>
             <div class="card-body">
+                <!-- Hidden field for ID Ujian -->
+                <input type="hidden" name="id_ujian" value="{{ $selectedUjian->id_jenis_ujian }}">
                 <!-- SCROLLSPY -->
                 <div class="row">
                     <div class="col-4">
@@ -77,7 +83,7 @@
                                     <div class="col">
                                         <label for="namaLengkap" class="form-label">Nama Lengkap</label>
                                         <input type="text" class="form-control" id="namaLengkap" name="namaLlengkap">
-                                        <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
+                                        <div id="namaLengkapHelper" class="form-text">Sesuai dengan KTP</div>
                                     </div>
                                     <div class="col">
                                         <label for="nik" class="form-label">NIK</label>
@@ -92,11 +98,11 @@
                                     <div class="col">
                                         <label for="alamat" class="form-label">Alamat Lengkap</label>
                                         <input type="text" class="form-control" id="alamat" name="alamat">
-                                        <div id="passwordHelpBlock" class="form-text">Sesuai dengan KTP</div>
+                                        <div id="alamatHelper" class="form-text">Sesuai dengan KTP</div>
                                     </div>
                                     <div class="col">
                                         <label for="keterangan" class="form-label">Keterangan Tempat Tinggal</label>
-                                        <select class="form-select" aria-label="Default select example">
+                                        <select class="form-select" id="keterangan" name="keterangan" aria-label="Default select example">
                                             <option selected hidden></option>
                                             <option value="Bersama Orangtua">Bersama Orangtua</option>
                                             <option value="Kos">Kos</option>
@@ -169,8 +175,8 @@
                                         <input type="email" class="form-control" id="email" name="email" disabled readonly value="{{ Auth::user()->email }}">
                                     </div>
                                     <div class="col">
-                                        <label for="noHp" class="form-label">Jenis Kelamin</label>
-                                        <select class="form-select" aria-label="Default select example">
+                                        <label for="jenisKelamin" class="form-label">Jenis Kelamin</label>
+                                        <select class="form-select" id="jenisKelamin" name="jenisKelamin" aria-label="Default select example">
                                             <option selected hidden></option>
                                             <option value="Perempuan">Perempuan</option>
                                             <option value="Laki-Laki">Laki-Laki</option>
@@ -198,7 +204,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                                        <select class="form-select" aria-label="Default select example">
+                                        <select class="form-select" id="kewarganegaraan" name="kewarganegaraan" aria-label="Default select example">
                                             <option selected hidden></option>
                                         </select>
                                     </div>
@@ -657,8 +663,7 @@
                 </div>
             </div>
         </div>
-    @endforeach
-@endforeach
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

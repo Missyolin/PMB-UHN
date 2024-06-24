@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_pribadi_pendaftar', function (Blueprint $table) {
             $table->id('id_data_pribadi');
+            $table->unsignedBigInteger('id_pendaftar');
             $table->string('nama_lengkap',100);
             $table->string('nik',16);
             $table->string('alamat',100);
@@ -33,6 +34,8 @@ return new class extends Migration
             $table->string('npm_1',8);
             $table->string('npm_2',8);
             $table->timestamps();
+
+            $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

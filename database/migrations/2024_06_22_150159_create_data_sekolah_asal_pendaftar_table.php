@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_sekolah_asal_pendaftar', function (Blueprint $table) {
             $table->id('id_data_sekolah_asal_pendaftar');
+            $table->unsignedBigInteger('id_pendaftar');
             $table->string('nama_sekolah',100);
             $table->string('jurusan',15);
             $table->year('tahun_lulus');
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->decimal('jumlah_nilai_uan',5,2);
             $table->integer('jumlah_mata_pelajaran_uan');
             $table->timestamps();
+
+            $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
