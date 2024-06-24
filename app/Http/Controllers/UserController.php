@@ -42,6 +42,12 @@ class UserController extends Controller
         ]);
     }
 
+    public function __construct()
+    {
+        $this->middleware('check.registration:id_ujian')->only('getFormulir');
+    }
+
+
     public function getFormulir($id)
     {
         Carbon::setLocale('id'); 
@@ -68,7 +74,7 @@ class UserController extends Controller
             abort(404, 'Ujian tidak ditemukan');
         }
         
-        return view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran'));
+        return view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran','id'));
     }
     
     public function simpanFormulir(Request $request)

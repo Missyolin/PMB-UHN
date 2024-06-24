@@ -69,7 +69,7 @@
                                 <!-- Add the button here -->
                                 @if($ujian->flag_is_ujian_opened)
                                 <div class="text-center mt-3">
-                                    <a href="{{ route('formulir-pmb',['id' => $ujian->id_jenis_ujian]) }}" class="btn text-white text-bold" style="width: 100%; background-color:#049DD9;">Daftar Ujian</a>
+                                    <a href="{{ route('formulir-pmb',['id_ujian' => $ujian->id_jenis_ujian]) }}" class="btn text-white text-bold" style="width: 100%; background-color:#049DD9;">Daftar Ujian</a>
                                 </div>
                                 @else
                                 <div class="text-center mt-3">
