@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('nama_sekolah',100);
             $table->string('jurusan',15);
             $table->year('tahun_lulus');
-            $table->string('no_ijazah',20);
-            $table->date('tanggal_ijazah');
+            $table->string('no_ijazah',20)->nullable();
+            $table->date('tanggal_ijazah')->nullable();
             $table->integer('provinsi_sekolah');
             $table->integer('kota_kabupaten_sekolah');
             $table->decimal('jumlah_nilai_uan',5,2);

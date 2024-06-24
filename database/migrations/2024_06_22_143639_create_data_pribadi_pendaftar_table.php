@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('kota_kabupaten');
             $table->integer('kecamatan');
             $table->string('kelurahan',50);
-            $table->string('kode_pos',6);
+            $table->string('kode_pos',6)->nullable();
             $table->string('no_telp',13);
             $table->string('jenis_kelamin');
             $table->string('tempat_lahir',50);
@@ -31,8 +31,8 @@ return new class extends Migration
             $table->string('agama',10);
             $table->string('gereja',10);
             $table->string('status_sipil',15);
-            $table->string('npm_1',8);
-            $table->string('npm_2',8);
+            $table->string('npm_1',8)->nullable();
+            $table->string('npm_2',8)->nullable();
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');

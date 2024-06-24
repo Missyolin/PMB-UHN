@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_ujian');
             $table->string('fakultas', 30);
             $table->string('prodi_1', 30);
-            $table->string('prodi_2', 30);
-            $table->decimal('nominal_tagihan', 9, 2);
-            $table->boolean('status_bayar');
+            $table->string('prodi_2', 30)->nullable();
+            $table->decimal('nominal_tagihan', 9, 2)->nullable();
+            $table->boolean('status_bayar')->nullable();
             $table->timestamps();
 
             // Define foreign key constraints

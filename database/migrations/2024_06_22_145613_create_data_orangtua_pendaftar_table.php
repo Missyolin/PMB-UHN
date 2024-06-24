@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('pekerjaan_ayah',30);
             $table->string('penghasilan_ayah',20);
             $table->string('alamat_ayah',50);
-            $table->string('status_ayah',10);
+            $table->string('status_ayah',12);
             $table->string('no_hp_ayah',13);
             $table->string('nama_ibu',50);
             $table->date('tanggal_lahir_ibu');
@@ -30,16 +30,16 @@ return new class extends Migration
             $table->string('pekerjaan_ibu',30);
             $table->string('penghasilan_ibu',20);
             $table->string('alamat_ibu',50);
-            $table->string('status_ibu',10);
+            $table->string('status_ibu',12);
             $table->string('no_hp_ibu',13);
-            $table->string('nama_wali',50);
-            $table->date('tanggal_lahir_wali');
-            $table->string('agama_wali',10);
-            $table->string('pendidikan_wali',15);
-            $table->string('pekerjaan_wali',30);
-            $table->string('penghasilan_wali',20);
-            $table->string('alamat_wali',50);
-            $table->string('no_hp_wali',13);
+            $table->string('nama_wali',50)->nullable();
+            $table->date('tanggal_lahir_wali')->nullable();
+            $table->string('agama_wali',10)->nullable();
+            $table->string('pendidikan_wali',15)->nullable();
+            $table->string('pekerjaan_wali',30)->nullable();
+            $table->string('penghasilan_wali',20)->nullable();
+            $table->string('alamat_wali',50)->nullable();
+            $table->string('no_hp_wali',13)->nullable();
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
