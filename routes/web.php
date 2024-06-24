@@ -43,7 +43,7 @@ Route::middleware(['web','auth'])->group(function() {
     
         // USER
         Route::get('/dashboard-pmb', [UserController::class, 'getDashboardPMB'])->name('dashboard');
-        Route::get('/formulir-pmb', function() { return view('User.formulir');})->name('formulir-pmb');
+        Route::get('/formulir-pmb', [UserController::class, 'getFormulir'])->name('formulir-pmb');
         Route::get('/konfirmasi-formulir', function() { return view('User.konfirmasi');})->name('konfirmasi-formulir');
         Route::get('/pembelian-formulir', function() { return view('User.payment');})->name('pembelian-formulir');
 

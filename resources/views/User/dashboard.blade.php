@@ -9,16 +9,7 @@
 
 <!-- Cards -->
 @foreach($tahun_ajaran as $tahun)
-    @php
-        $hiddenUjianCount = $tahun->jenisUjian->where('flag_is_ujian_hidden', 1)->count();
-        $totalUjianCount = $tahun->jenisUjian->count();
-    @endphp
-    @if($totalUjianCount == 0 || $hiddenUjianCount == $totalUjianCount)
-        <div class="alert alert-warning m-5 text-center" role="alert">
-            <i class="bi bi-info-circle"></i><br>Saat ini sedang tidak ada ujian penerimaan mahasiswa baru Universitas HKBP Nommensen
-        </div>
-    @else
-        <div class="row row-cols-1 row-cols-md-3 g-4 mx-5 my-3" >
+        <div class="row row-cols-1  row-cols-md-1  row-cols-lg-3 g-4 mx-5 my-3" >
             @foreach($tahun->jenisUjian as $ujian)
                 @if(!$ujian->flag_is_ujian_hidden)
                     <div class="col">
@@ -78,11 +69,11 @@
                                 <!-- Add the button here -->
                                 @if($ujian->flag_is_ujian_opened)
                                 <div class="text-center mt-3">
-                                    <a href="{{ route('formulir-pmb') }}" class="btn text-white text-bold" style="width:20rem; background-color:#049DD9;">Daftar Ujian</a>
+                                    <a href="{{ route('formulir-pmb') }}" class="btn text-white text-bold" style="width: 100%; background-color:#049DD9;">Daftar Ujian</a>
                                 </div>
                                 @else
                                 <div class="text-center mt-3">
-                                    <button class="btn btn-secondary"  style="width:20rem;" disabled>Daftar Ujian</button>
+                                    <button class="btn btn-secondary"  style="width: 100%;" disabled>Daftar Ujian</button>
                                 </div>
                                 @endif
                             </div>
@@ -92,7 +83,6 @@
                 @endif
             @endforeach 
         </div>
-    @endif
 @endforeach
 
 @endsection
