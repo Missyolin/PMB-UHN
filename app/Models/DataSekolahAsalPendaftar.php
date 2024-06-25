@@ -10,6 +10,8 @@ class DataSekolahAsalPendaftar extends Model
     protected $table = 'data_sekolah_asal_pendaftar';
 
     protected $fillable =[
+        'id_pendaftar',
+        'id_ujian',
         'nama_sekolah',
         'jurusan',
         'tahun_lulus',

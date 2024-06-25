@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('data_sekolah_asal_pendaftar', function (Blueprint $table) {
             $table->id('id_data_sekolah_asal_pendaftar');
             $table->unsignedBigInteger('id_pendaftar');
+            $table->unsignedBigInteger('id_ujian');
             $table->string('nama_sekolah',100);
             $table->string('jurusan',15);
             $table->year('tahun_lulus');
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_ujian')->references('id_jenis_ujian')->on('jenis_ujian')->onDelete('cascade');
+
         });
     }
 

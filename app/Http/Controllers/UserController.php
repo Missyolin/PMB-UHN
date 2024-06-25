@@ -155,6 +155,7 @@ class UserController extends Controller
             // Simpan data pribadi pendaftar
             $dataPribadi = new DataPribadiPendaftar();
             $dataPribadi->id_pendaftar = $userId;
+            $dataPribadi->id_ujian = $validatedData['id_ujian'];
             $dataPribadi->nama_lengkap = $validatedData['namaLengkap'];
             $dataPribadi->nik = $validatedData['nik'];
             $dataPribadi->alamat = $validatedData['alamat'];
@@ -179,6 +180,7 @@ class UserController extends Controller
             // Simpan data sekolah asal pendaftar
             $dataSekolah = new DataSekolahAsalPendaftar();
             $dataSekolah->id_pendaftar = $userId;
+            $dataSekolah->id_ujian = $validatedData['id_ujian'];
             $dataSekolah->provinsi_sekolah = $validatedData['provSekolah'];
             $dataSekolah->kota_kabupaten_sekolah = $validatedData['kotaSekolah'];
             $dataSekolah->nama_sekolah = $validatedData['asalSekolah'];
@@ -202,6 +204,7 @@ class UserController extends Controller
             // Simpan data ayah
             $dataOrangtua = new DataOrangtuaPendaftar();
             $dataOrangtua->id_pendaftar = $userId;
+            $dataOrangtua->id_ujian = $validatedData['id_ujian'];
             $dataOrangtua->nama_ayah = $validatedData['namaAyah'];
             $dataOrangtua->tanggal_lahir_ayah = $validatedData['tlAyah'];
             $dataOrangtua->agama_ayah = $validatedData['agamaAyah'];

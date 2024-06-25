@@ -10,6 +10,8 @@ class DataOrangtuaPendaftar extends Model
    protected $table='data_orangtua_pendaftar';
 
    protected $fillable = [
+      'id_pendaftar',
+      'id_ujian',
     'nama_ayah',
     'tanggal_lahir_ayah',
     'agama_ayah',

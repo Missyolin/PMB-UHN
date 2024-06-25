@@ -12,6 +12,7 @@ class DataPribadiPendaftar extends Model
     protected $fillable = [
         'nama_lengkap',
         'id_data_pribadi',
+        'id_ujian',
         'nik',
         'alamat',
         'keterangan_tempat_tinggal',
@@ -32,6 +33,12 @@ class DataPribadiPendaftar extends Model
         'npm_2',
     ];
 
+    
     protected $primaryKey = 'id_data_pribadi_pendaftar';
+
+    public function provinsi()
+    {
+        return $this->belongsTo(Province::class, 'provinsi', 'id');
+    }
 
 }

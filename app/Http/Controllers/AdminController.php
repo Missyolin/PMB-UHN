@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
 use App\Models\JenisUjian;
+use App\Models\PendaftaranUjian;
+use App\Models\DataPribadiPendaftar;
+use App\Models\DataOrangtuaPendaftar;
+use App\Models\DataSekolahAsalPendaftar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -192,4 +196,34 @@ class AdminController extends Controller
             return redirect()->back()->withErrors(['custom_error' => 'Gagal menghapus ujian. Silakan coba lagi.']);
         }
     }
+
+    public function getKelolaPeserta($id)
+    {
+        // Ambil data ujian berdasarkan ID
+        $ujian = JenisUjian::findOrFail($id);
+
+        // Ambil data pendaftaran ujian berdasarkan id ujian
+        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
+
+        // Ambil id_pendaftar dari pendaftarans
+        $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
+
+        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar
+        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
+        $dataOrangtua = DataOrangtuaPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
+        $dataSekolahAsal = DataSekolahAsalPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
+
+        // Gabungkan data yang relevan ke dalam satu array
+        $peserta = $pendaftaran->map(function ($pendaftar) use ($dataPribadi, $dataOrangtua, $dataSekolahAsal) {
+            return [
+                'pendaftar' => $pendaftar,
+                'pribadi' => $dataPribadi->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'orangtua' => $dataOrangtua->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'sekolah' => $dataSekolahAsal->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+            ];
+        });
+
+        return view('Admin.konfirmasipeserta', compact('ujian', 'peserta'));
+    }
+
 }

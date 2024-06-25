@@ -70,6 +70,6 @@ Route::middleware(['web','auth'])->group(function() {
         Route::post('manajemen-pmb-sembunyikan-ujian/{id}', [AdminController::class, 'sembunyikanUjian'])->name('sembunyikan-ujian');
         Route::delete('manajemen-pmb-hapus-ujian/{id}', [AdminController::class, 'hapusUjian'])->name('hapus-ujian');
 
-        Route::get('/manajemen-pmb-konfirmasi-peserta-pmb', function() { return view('Admin.konfirmasipeserta');})->name('konfirmasi-admin');            
+        Route::get('/manajemen-pmb-konfirmasi-peserta-pmb/{id}', [AdminController::class, 'getKelolaPeserta'])->name('konfirmasi-admin');            
     });
 });

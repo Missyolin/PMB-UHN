@@ -24,12 +24,11 @@ class Province extends Model
      * @var string
      */
     protected $table = 'provinces';
+    public $incrementing = false;
+    protected $keyType = 'char';
 
-    /**
-     * Province has many regencies.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    protected $fillable = ['id', 'name'];
+    
     public function regencies()
     {
         return $this->hasMany(Regency::class, 'province_id', 'id');

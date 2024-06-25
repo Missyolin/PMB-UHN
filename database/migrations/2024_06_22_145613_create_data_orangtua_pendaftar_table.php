@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('data_orangtua_pendaftar', function (Blueprint $table) {
             $table->id('id_data_orangtua_pendaftar');
             $table->unsignedBigInteger('id_pendaftar');
+            $table->unsignedBigInteger('id_ujian');
             $table->string('nama_ayah',50);
             $table->date('tanggal_lahir_ayah');
             $table->string('agama_ayah',10);
@@ -43,6 +44,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_ujian')->references('id_jenis_ujian')->on('jenis_ujian')->onDelete('cascade');
+
         });
     }
 
