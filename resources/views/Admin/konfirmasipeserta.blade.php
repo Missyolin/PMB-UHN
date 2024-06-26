@@ -25,17 +25,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($peserta as $item)
-                @php
-                    $counter = 1;
-                @endphp
-            <tr>    
+        @php
+            $counter = 1;
+        @endphp
+
+        @foreach($peserta as $item)
+            <tr>
                 <td scope="row">{{$counter++}}</td>
                 <td colspan="2">{{$item['pribadi']->nama_lengkap}}</td>
-                <td><span class="badge text-bg-success">Terverifikasii</span></td>
-                <td><button data-bs-target="#detailPeserta-{{$item['pendaftar']->id_pendaftar}}" data-bs-toggle="modal" class="btn btn-primary">View Detail</button></td>
+                @if($item['pendaftar']->flag_is_formulir_verified)
+                    <td><span class="badge text-bg-success">Terverifikasi</span></td>
+                @else
+                    <td><span class="badge text-bg-warning">Belum Terverifikasi</span></td>
+                @endif
+                <td><button data-bs-target="#detailPeserta-{{$item['pendaftar']->id_pendaftaran_ujian}}" data-bs-toggle="modal" class="btn btn-primary">View Detail</button></td>
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
 </div>
@@ -43,7 +48,7 @@
 
 <!-- MODAL DATA PENDAFTAR -->
 @foreach($peserta as $item)
-<div class="modal fade" id="detailPeserta-{{$item['pendaftar']->id_pendaftar}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailPeserta-{{$item['pendaftar']->id_pendaftaran_ujian}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -128,7 +133,7 @@
                             </div>
                             <div class="col">
                                 <label for="email" class="form-label">Email</label>
-                                <input disabled type="email" class="form-control" id="email" name="email" disabled readonly value="">
+                                <input disabled type="email" class="form-control" id="email" name="email" disabled readonly value="{{$item['email']}}">
                             </div>
                         </div>
                     </div>
@@ -515,9 +520,13 @@
     
             
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success">Verifikasi</button>
-        </div>
+
+        <form method="POST" action="{{ route('konfirmasi-peserta', $item['pendaftar']->id_pendaftaran_ujian) }}">
+            @csrf <!-- Laravel Blade directive untuk menambahkan CSRF token -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Verifikasi</button>
+            </div>
+        </form>
     </div>
 </div>
     </div>

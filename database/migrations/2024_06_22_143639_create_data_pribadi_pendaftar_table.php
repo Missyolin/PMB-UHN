@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('nik', 16);
             $table->string('alamat', 100);
             $table->string('keterangan_tempat_tinggal', 20);
-            $table->char('provinsi', 2); // Ubah tipe kolom menjadi char(2)
-            $table->integer('kota_kabupaten');
-            $table->integer('kecamatan');
+            $table->string('provinsi'); // Ubah tipe kolom menjadi char(2)
+            $table->string('kota_kabupaten');
+            $table->string('kecamatan');
             $table->string('kelurahan', 50);
             $table->string('kode_pos', 6)->nullable();
             $table->string('no_telp', 13);
@@ -38,8 +38,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_pendaftar')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_ujian')->references('id_jenis_ujian')->on('jenis_ujian')->onDelete('cascade');
-            $table->foreign('provinsi')->references('id')->on('provinces')->onDelete('cascade'); // Tambahkan foreign key constraint
         });
     }
 

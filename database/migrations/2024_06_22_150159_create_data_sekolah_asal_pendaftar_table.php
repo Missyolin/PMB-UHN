@@ -20,8 +20,8 @@ return new class extends Migration
             $table->year('tahun_lulus');
             $table->string('no_ijazah',20)->nullable();
             $table->date('tanggal_ijazah')->nullable();
-            $table->integer('provinsi_sekolah');
-            $table->integer('kota_kabupaten_sekolah');
+            $table->string('provinsi_sekolah');
+            $table->string('kota_kabupaten_sekolah');
             $table->decimal('jumlah_nilai_uan',5,2);
             $table->integer('jumlah_mata_pelajaran_uan');
             $table->timestamps();

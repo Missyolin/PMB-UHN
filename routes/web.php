@@ -71,5 +71,6 @@ Route::middleware(['web','auth'])->group(function() {
         Route::delete('manajemen-pmb-hapus-ujian/{id}', [AdminController::class, 'hapusUjian'])->name('hapus-ujian');
 
         Route::get('/manajemen-pmb-konfirmasi-peserta-pmb/{id}', [AdminController::class, 'getKelolaPeserta'])->name('konfirmasi-admin');            
+        Route::post('/manajemen-pmb-konfirmasi-peserta-pmb/{id}', [AdminController::class, 'konfirmasiPeserta'])->name('konfirmasi-peserta');            
     });
 });

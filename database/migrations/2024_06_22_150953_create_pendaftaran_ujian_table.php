@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('fakultas', 30);
             $table->string('prodi_1', 30);
             $table->string('prodi_2', 30)->nullable();
+            $table->boolean('flag_is_formulir_verified')->default(false);
             $table->decimal('nominal_tagihan', 9, 2)->nullable();
             $table->boolean('status_bayar')->nullable();
             $table->timestamps();

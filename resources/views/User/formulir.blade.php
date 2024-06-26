@@ -122,30 +122,29 @@
                                     <select id="provinsi" name="provinsi" class="form-select" aria-label="Default select example" required>
                                         <option selected hidden></option>
                                         @foreach($provinces as $provinsi)
-                                        <option value="{{$provinsi->id}}">{{$provinsi->name}}</option>
+                                        <option value="{{$provinsi->name}}">{{$provinsi->name}}</option>
                                         @endforeach
                                     </select>
-
                                 </div>
                                 <div class="col">
                                     <label for="kota_kabupaten" class="form-label">Kota/Kabupaten</label>
                                     <select id="kota_kabupaten" name="kota_kabupaten" class="form-select" aria-label="Default select example" required>
                                         <option selected hidden></option>
                                         @foreach ($regencies as $kab_kota)
-                                            <option value="{{ $kab_kota->id }}" class="kab_kota-option" data-province-id="{{ $kab_kota->province_id }}">{{ $kab_kota->name }}</option>
+                                            <option value="{{ $kab_kota->name }}" class="kab_kota-option" data-province-name="{{ $kab_kota->province->name }}">{{ $kab_kota->name }}</option>
                                         @endforeach
                                     </select>
-
                                 </div>
                                 <div class="col">
                                     <label for="kecamatan" class="form-label">Kecamatan</label>
                                     <select id="kecamatan" name="kecamatan" class="form-select" aria-label="Default select example" required>
                                         <option selected hidden></option>
                                         @foreach ($districts as $kecamatan)
-                                            <option value="{{$kecamatan->id}}" class="kecamatan-option" data-regency-id="{{$kecamatan->regency_id}}">{{$kecamatan->name}}</option>
+                                            <option value="{{ $kecamatan->name }}" class="kecamatan-option" data-regency-name="{{ $kecamatan->regency->name }}">{{ $kecamatan->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+
                             </div>
                         </div>
 
@@ -250,7 +249,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="npm_2" class="form-label">NPM - 2</label>
-                                    <input type="email" class="form-control" id="npm_2" name="npm_2">
+                                    <input type="text" class="form-control" id="npm_2" name="npm_2">
                                 </div>
                             </div>
                         </div>
@@ -314,7 +313,7 @@
                                     <select id="provSekolah" name="provSekolah" class="form-select" aria-label="Default select example" required>
                                         <option selected hidden></option>
                                         @foreach($provinces as $provinsi)
-                                        <option value="{{$provinsi->id}}">{{$provinsi->name}}</option>
+                                        <option value="{{$provinsi->name}}">{{$provinsi->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -323,10 +322,11 @@
                                     <select id="kotaSekolah" name="kotaSekolah" class="form-select" aria-label="Default select example" required>
                                         <option selected hidden></option>
                                         @foreach ($regencies as $kab_kota)
-                                        <option value="{{ $kab_kota->id }}" data-province-id="{{ $kab_kota->province_id }}">{{ $kab_kota->name }}</option>
+                                        <option value="{{ $kab_kota->name }}" data-province-name="{{ $kab_kota->province->name }}">{{ $kab_kota->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+
                             </div>
                         </div>
 
@@ -683,73 +683,60 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var kota_kabupaten = document.getElementById('kota_kabupaten');
-        var kecamatan = document.getElementById('kecamatan');
+document.addEventListener('DOMContentLoaded', function() {
+    const provinsiSelect = document.getElementById('provinsi');
+    const kotaKabupatenSelect = document.getElementById('kota_kabupaten');
+    const kecamatanSelect = document.getElementById('kecamatan');
 
-        // Ketika dropdown Provinsi berubah
-        document.getElementById('provinsi').addEventListener('change', function () {
-            var selectedProvinceId = this.value;
+    const provSekolahSelect = document.getElementById('provSekolah');
+    const kotaSekolahSelect = document.getElementById('kotaSekolah');
 
-            // Menyembunyikan semua opsi Kota/Kabupaten
-            Array.from(kota_kabupaten.options).forEach(function(option) {
-                if (option.value === '' || option.getAttribute('data-province-id') === selectedProvinceId) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
-                }
-            });
-
-            // Mereset dropdown Kota/Kabupaten dan Kecamatan
-            kota_kabupaten.selectedIndex = 0;
-            Array.from(kecamatan.options).forEach(function(option) {
+    // Fungsi untuk menampilkan/menyembunyikan opsi berdasarkan atribut data
+    function filterOptions(selectElement, dataAttribute, filterValue) {
+        Array.from(selectElement.options).forEach(option => {
+            if (option.value === '' || option.getAttribute(dataAttribute) === filterValue) {
+                option.style.display = '';
+            } else {
                 option.style.display = 'none';
-            });
-        });
-
-        // Ketika dropdown Kota/Kabupaten berubah
-        document.getElementById('kota_kabupaten').addEventListener('change', function () {
-            var selectedRegencyId = this.value;
-
-            // Menyembunyikan semua opsi Kecamatan
-            Array.from(kecamatan.options).forEach(function(option) {
-                if (option.value === '' || option.getAttribute('data-regency-id') === selectedRegencyId) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
-                }
-            });
-
-            // Mereset dropdown Kecamatan
-            kecamatan.selectedIndex = 0;
-        });
-    });
-</script>
-
-<script>
-    // Ambil elemen dropdown Provinsi dan Kota/Kabupaten
-    const provinsiSelect = document.getElementById('provSekolah');
-    const kotaSelect = document.getElementById('kotaSekolah');
-    
-    // Simpan semua opsi Kota/Kabupaten untuk referensi
-    const allKabupatenOptions = Array.from(kotaSelect.options);
-    
-    // Ketika dropdown Provinsi berubah
-    provinsiSelect.addEventListener('change', function() {
-        const selectedProvinceId = this.value; // Ambil nilai id Provinsi yang dipilih
-        
-        // Kosongkan opsi Kota/Kabupaten
-        kotaSelect.innerHTML = '<option selected hidden></option>';
-        
-        // Tambahkan kembali opsi Kota/Kabupaten yang sesuai dengan Provinsi yang dipilih
-        allKabupatenOptions.forEach(option => {
-            // Tambahkan opsi jika data-province-id-nya sama dengan id Provinsi yang dipilih
-            if (option.getAttribute('data-province-id') === selectedProvinceId) {
-                kotaSelect.appendChild(option.cloneNode(true));
             }
         });
-    });
+        selectElement.selectedIndex = 0; // Reset pilihan
+    }
+
+    // Event listener untuk perubahan dropdown Provinsi
+    if (provinsiSelect && kotaKabupatenSelect) {
+        provinsiSelect.addEventListener('change', function() {
+            filterOptions(kotaKabupatenSelect, 'data-province-name', this.value);
+            filterOptions(kecamatanSelect, 'data-regency-name', ''); // Reset kecamatan
+        });
+    }
+
+    // Event listener untuk perubahan dropdown Kota/Kabupaten
+    if (kotaKabupatenSelect && kecamatanSelect) {
+        kotaKabupatenSelect.addEventListener('change', function() {
+            filterOptions(kecamatanSelect, 'data-regency-name', this.value);
+        });
+    }
+
+    // Simpan semua opsi Kota/Kabupaten untuk dropdown Sekolah
+    const allKotaSekolahOptions = Array.from(kotaSekolahSelect ? kotaSekolahSelect.options : []);
+
+    // Event listener untuk perubahan dropdown Provinsi Sekolah
+    if (provSekolahSelect && kotaSekolahSelect) {
+        provSekolahSelect.addEventListener('change', function() {
+            const selectedProvinceName = this.value;
+            kotaSekolahSelect.innerHTML = '<option selected hidden></option>'; // Kosongkan opsi Kota/Kabupaten
+
+            allKotaSekolahOptions.forEach(option => {
+                if (option.getAttribute('data-province-name') === selectedProvinceName) {
+                    kotaSekolahSelect.appendChild(option.cloneNode(true));
+                }
+            });
+        });
+    }
+});
 </script>
+
 
 
 

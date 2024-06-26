@@ -44,6 +44,10 @@
                                             @else
                                                 <span class="badge bg-info ms-2">Ditampilkan</span>
                                             @endif
+
+                                            @if($ujian->jumlah_belum_verifikasi > 0)
+                                            <span class="badge bg-danger ms-2">{{ $ujian->jumlah_belum_verifikasi }}</span>
+                                            @endif
                                         </button>
                                         
                                         <!-- BODY -->
@@ -84,7 +88,7 @@
                                                                 </div>
                                                                 @endif
                                                                 <div class="col text-center">
-                                                                    <a href="{{route('konfirmasi-admin', ['id' => $ujian->id_jenis_ujian])}}" class="btn btn-success">Konfirmasi Peserta<span class="ms-2 badge bg-danger text-white">4</span></a>
+                                                                    <a href="{{route('konfirmasi-admin', ['id' => $ujian->id_jenis_ujian])}}" class="btn btn-success">Konfirmasi Peserta<span class="badge bg-danger ms-2">{{ $ujian->jumlah_belum_verifikasi }}</span></a>
                                                                 </div>
                                                             </div>
         

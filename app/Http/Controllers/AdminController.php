@@ -33,8 +33,15 @@ class AdminController extends Controller
             foreach ($tahun->jenisUjian as $ujian) {
                 $ujian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
                 $ujian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+
+                // Ambil data pendaftaran ujian berdasarkan id ujian
+                $pendaftaran = PendaftaranUjian::where('id_ujian', $ujian->id_jenis_ujian)->get();
+
+                // Hitung jumlah pendaftar yang belum diverifikasi
+                $ujian->jumlah_belum_verifikasi = $pendaftaran->where('flag_is_formulir_verified', false)->count();
             }
         }
+
         return view('Admin.kelolaUjian', [
             'tahun_ajaran' => $tahun_ajaran,
         ]);
@@ -205,25 +212,47 @@ class AdminController extends Controller
         // Ambil data pendaftaran ujian berdasarkan id ujian
         $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
 
-        // Ambil id_pendaftar dari pendaftarans
+        // Ambil id_pendaftar dari pendaftaran
         $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
 
-        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar
-        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
-        $dataOrangtua = DataOrangtuaPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
-        $dataSekolahAsal = DataSekolahAsalPendaftar::whereIn('id_pendaftar', $id_pendaftars)->get();
+        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
+        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->with('user') // Eager load relasi user
+            ->get();
+        
+        $dataOrangtua = DataOrangtuaPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->get();
+        
+        $dataSekolahAsal = DataSekolahAsalPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->get();
 
         // Gabungkan data yang relevan ke dalam satu array
         $peserta = $pendaftaran->map(function ($pendaftar) use ($dataPribadi, $dataOrangtua, $dataSekolahAsal) {
+            $pribadi = $dataPribadi->firstWhere('id_pendaftar', $pendaftar->id_pendaftar);
             return [
                 'pendaftar' => $pendaftar,
-                'pribadi' => $dataPribadi->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'pribadi' => $pribadi,
                 'orangtua' => $dataOrangtua->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
                 'sekolah' => $dataSekolahAsal->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'email' => $pribadi ? $pribadi->user->email : null // Ambil email dari relasi user
             ];
         });
 
         return view('Admin.konfirmasipeserta', compact('ujian', 'peserta'));
+    }
+
+    public function konfirmasiPeserta($id)
+    {
+        $pendaftar = PendaftaranUjian::findOrFail($id);
+        $pendaftar->flag_is_formulir_verified = true; // Perbaikan: Menggunakan operator assignment, bukan pemanggilan method
+        $pendaftar->save();
+
+        $idUjian = $pendaftar->id_ujian;
+
+        return redirect()->route('konfirmasi-admin',['id' => $idUjian])->with('success', 'Formulir peserta berhasil diverifikasi.');
     }
 
 }

@@ -36,9 +36,9 @@ class DataPribadiPendaftar extends Model
     
     protected $primaryKey = 'id_data_pribadi_pendaftar';
 
-    public function provinsi()
+    public function user()
     {
-        return $this->belongsTo(Province::class, 'provinsi', 'id');
+        return $this->belongsTo(User::class, 'id_pendaftar');
     }
 
 }
