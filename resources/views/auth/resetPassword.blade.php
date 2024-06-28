@@ -20,13 +20,14 @@
                     <div class="card-body px-5">
                         <h2 class="mb-3">Reset Kata Sandi</h2>
                         <p class="card-text py-2">
-                            Enter your email address and we'll send you an email with instructions to reset your password.
+                            Silahkan isi field dibawah untuk mengganti password anda.
                         </p>
-                        <form action="{{route('forgot-password-act')}}" method="post">
+                        <form action="{{route('forgot-password-validation-act')}}" method="post">
                             @csrf
+                            <input type="hidden" name="token" value="{{$token}}">
                             <div data-mdb-input-init class="form-outline">
-                                <label class="form-label" for="email">Alamat Email</label>
-                                <input type="email" id="email" name="email" class="form-control"/>
+                                <label class="form-label" for="newPassword">Password Baru</label>
+                                <input type="password" id="newPassword" name="newPassword" class="form-control"/>
                             </div>
                             <div class="d-grid gap-2 mt-3">
                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn text-white btn-block " style="background-color: hsl(196.9, 96.38%, 43.33%)">
@@ -34,7 +35,7 @@
                                 </button>
                             </div>
                         </form>
-                        @error('email')
+                        @error('password')
                         <div class="text-end">
                             <h7 class="text-danger">{{$message}}</h7>
                         </div>

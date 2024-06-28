@@ -37,6 +37,10 @@ Route::get('/logout', function () {
 
 // Route for forgot password
 Route::get('/forgot-password', function(){return view('User.forgotPassword');})->name('forgot-password')->middleware('guest');
+Route::post('/forgot-password-act', [accountController::class, 'forgotPasswordAct'])->name('forgot-password-act')->middleware('guest');
+
+Route::get('/forgot-password-validation/{token}', [accountController::class, 'forgotPasswordValidation'])->name('forgot-password-validation')->middleware('guest');
+Route::post('/forgot-password-validation-act', [accountController::class, 'forgotPasswordValidationAct'])->name('forgot-password-validation-act')->middleware('guest');
     
 Route::middleware(['web','auth'])->group(function() {
     
