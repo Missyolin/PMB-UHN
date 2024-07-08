@@ -269,7 +269,23 @@ class UserController extends Controller
     public function previewFormulir($id)
     {
         // Ambil data ujian berdasarkan ID
-        $ujian = JenisUjian::findOrFail($id);
+        $selectedUjian = null;
+        $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+
+        foreach ($tahun_ajaran as $tahun) {
+            foreach ($tahun->jenisUjian as $ujian) {
+                if ($ujian->id_jenis_ujian == $id) {
+                    $selectedUjian = $ujian;
+                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                    break 2;
+                }
+            }
+        }
+
+        if (!$selectedUjian) {
+            abort(404, 'Ujian tidak ditemukan');
+        }
 
         // Ambil data pendaftaran ujian berdasarkan id ujian
         $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
@@ -302,7 +318,39 @@ class UserController extends Controller
                 'email' => $pribadi ? $pribadi->user->email : null // Ambil email dari relasi user
             ];
         });
-        return view('User.previewFormulir', compact('ujian', 'peserta'));
+
+        return view('User.previewFormulir', compact('selectedUjian', 'peserta'));
     }
+
+    public function getKonfirmasi($id)
+    {
+        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
+        // Ambil id_pendaftar dari pendaftaran
+        $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
+
+        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
+        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+        ->where('id_ujian', $id)
+        ->get(['nama_lengkap']); // Ambil hanya kolom 'nama_lengkap'
+
+        $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+        $selectedUjian = null;
+        foreach ($tahun_ajaran as $tahun) {
+            foreach ($tahun->jenisUjian as $ujian) {
+                if ($ujian->id_jenis_ujian == $id) {
+                    $selectedUjian = $ujian;
+                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                    break 2;
+                }
+            }
+        }
+        $konfirmasiStatus = $pendaftaran->first()->flag_is_formulir_verified == 1;
+
+        return view('User.konfirmasi', compact('selectedUjian', 'dataPribadi', 'konfirmasiStatus'));
+    }
+
+
+
 
 }

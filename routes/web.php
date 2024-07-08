@@ -52,7 +52,7 @@ Route::middleware(['web','auth'])->group(function() {
 
     Route::post('/simpan-formulir-pmb', [UserController::class, 'simpanFormulir'])->name('save-formulir-pmb');
     Route::get('/preview-formulir/{id}', [UserController::class, 'previewFormulir'])->name('preview-formulir');
-    Route::get('/konfirmasi-formulir', function() { return view('User.konfirmasi');})->name('konfirmasi-formulir');
+    Route::get('/konfirmasi-formulir/{id}', [UserController::class, 'getKonfirmasi'])->name('konfirmasi-formulir');
 
     // ADMIN
     Route::middleware(['admin'])->group(function() {

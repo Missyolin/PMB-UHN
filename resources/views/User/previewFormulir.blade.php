@@ -1,12 +1,54 @@
 @extends('Template.header')
 
 @section('content-below')
-<div class="text-secondary text-start my-3">
+<div class="text-secondary text-start my-3 mx-5">
     <a href="{{ route('dashboard') }}" class="btn">
         <h6><i class="bi bi-chevron-left"></i> Dashboard</h6>
     </a>
 </div>
+<div class="text-secondary text-center my-3">
+    <h4>Detail Ujian {{$selectedUjian->nama_ujian}}</h4>
+</div>
 
+<!-- DETAILS -->
+<div class="row row-cols-1 row-cols-md-3 g-4 mx-5 my-3 text-center" >
+    <table class="table table-borderless">
+    <thead>
+        <tr>
+        <th scope="col">Periode Pendaftaran</th>
+        <th scope="col">Tanggal Ujian</th>
+        <th scope="col">Tanggal Pengumuman</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td scope="row">{{ $selectedUjian->tanggal_buka_pendaftaran_formatted }} - {{ $selectedUjian->tanggal_tutup_pendaftaran_formatted }}</td>
+        @if($selectedUjian->metode_ujian == 'Testing')
+        <td scope="row">{{ $selectedUjian->tanggal_buka_pendaftaran_formatted }} - {{ $selectedUjian->tanggal_tutup_pendaftaran_formatted }}</td>
+        @else
+        <td>-</td>
+        @endif
+        <td>{{$selectedUjian->waktu_pengumuman}}</td>
+        </tr>
+    </tbody>
+    <thead>
+        <tr>
+        <th scope="col">Metode Ujian</th>
+        <th scope="col">Biaya Formulir</th>
+        <th scope="col">Lihat Informasi Ujian</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td scope="row">{{$selectedUjian->metode_ujian}}</td>
+        <td>Gratis</td>
+        <td>
+            <a href="{{route('konfirmasi-formulir', ['id' => $selectedUjian->id_jenis_ujian])}}" class="btn bg-info-subtle fw-semibold text-info">Lihat</a>
+        </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
 
 <!-- MODAL DATA PENDAFTAR -->
 @foreach($peserta as $item)
