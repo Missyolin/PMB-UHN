@@ -1,61 +1,21 @@
-@extends('Template.admin')
+@extends('Template.header')
 
 @section('content-below')
 <div class="text-secondary text-start my-3">
-    <a href="{{ route('kelola-ujian') }}" class="btn">
-        <h6><i class="bi bi-chevron-left"></i> Manajemen PMB</h6>
+    <a href="{{ route('dashboard') }}" class="btn">
+        <h6><i class="bi bi-chevron-left"></i> Dashboard</h6>
     </a>
 </div>
 
-<!-- CARD -->
-<div class="card">
-  <div class="card-header">
-    Konfirmasi Peserta PMB Bebas Testing
-  </div>
-  <div class="card-body">
-    <div id="passwordHelpBlock" class="form-text">Unduh data pendaftar yang sudah diverifikasi</div>
-    <button class="btn btn-success mb-3"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Unduh Data Pendaftar</button>
-    <table class="table table-striped align-middle">
-        <thead>
-            <tr>
-            <th scope="col">No</th>
-            <th colspan="2">Nama Peserta</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @php
-            $counter = 1;
-        @endphp
-
-        @foreach($peserta as $item)
-            <tr>
-                <td scope="row">{{$counter++}}</td>
-                <td colspan="2">{{$item['pribadi']->nama_lengkap}}</td>
-                @if($item['pendaftar']->flag_is_formulir_verified)
-                    <td><span class="badge text-bg-success">Terverifikasi</span></td>
-                @else
-                    <td><span class="badge text-bg-warning">Belum Terverifikasi</span></td>
-                @endif
-                <td><button data-bs-target="#detailPeserta-{{$item['pendaftar']->id_pendaftaran_ujian}}" data-bs-toggle="modal" class="btn btn-primary">View Detail</button></td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
-</div>
 
 <!-- MODAL DATA PENDAFTAR -->
 @foreach($peserta as $item)
-<div class="modal fade" id="detailPeserta-{{$item['pendaftar']->id_pendaftaran_ujian}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+<div class="">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">{{$item['pribadi']->nama_lengkap}}</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">  
+        <div class="mx-3">  
             <div class="">
                 <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                     <h3><div class="fw-semibold" id="dataPribadi">
@@ -506,17 +466,7 @@
                     <!-- END OF WALI -->
                 </div>
             </div>
-        
-    
-            
         </div>
-
-        <form method="POST" action="{{ route('konfirmasi-peserta', $item['pendaftar']->id_pendaftaran_ujian) }}">
-            @csrf <!-- Laravel Blade directive untuk menambahkan CSRF token -->
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Verifikasi</button>
-            </div>
-        </form>
     </div>
 </div>
     </div>

@@ -1,6 +1,12 @@
 @extends('Template.header')
 
 @section('content-below')
+@if(session('registered_exam') == $selectedUjian->id_jenis_ujian)
+    <script>
+        window.location.href = '{{ route("dashboard") }}';
+    </script>
+@else
+    <!-- Formulir pendaftaran -->
 <div class="text-secondary text-start my-3 mx-5">
     <a href="{{ route('dashboard') }}" class="btn"><h6><i class="bi bi-chevron-left"></i> Dashboard</h6><a>
 </div>
@@ -229,6 +235,7 @@
                                         <option value="Budha">Budha</option>
                                         <option value="Hindu">Hindu</option>
                                         <option value="Konghucu">Konghucu</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -334,6 +341,10 @@
                         <div class="mx-5 my-3 text-start">
                             <div class="row">
                                 <div class="col">
+                                    <label for="nisn" class="form-label">NISN</label>
+                                    <input class="form-control" type="text" id="nisn" name="nisn" required>
+                                </div>
+                                <div class="col">
                                     <label for="asalSekolah" class="form-label">Asal SMA/SMK/MA</label>
                                     <input class="form-control" type="text" id="asalSekolah" name="asalSekolah" required>
                                 </div>
@@ -364,20 +375,6 @@
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endfor
                                     </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nomor Ijazah, Tanggal Ijazah -->
-                        <div class="mx-5 my-3 text-start">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="noIjazah" class="form-label">Nomor Ijazah</label>
-                                    <input type="text" class="form-control" id="noIjazah" name="noIjazah">
-                                </div>
-                                <div class="col">
-                                    <label for="tglIjazah" class="form-label">Tanggal Ijazah</label>
-                                    <input type="date" class="form-control" id="tglIjazah" name="tglIjazah">
                                 </div>
                             </div>
                         </div>
@@ -432,6 +429,8 @@
                                         <option value="Budha">Budha</option>
                                         <option value="Hindu">Hindu</option>
                                         <option value="Konghucu">Konghucu</option>
+                                        <option value="Konghucu">Konghucu</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -527,6 +526,7 @@
                                         <option value="Budha">Budha</option>
                                         <option value="Hindu">Hindu</option>
                                         <option value="Konghucu">Konghucu</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -622,6 +622,7 @@
                                         <option value="Budha">Budha</option>
                                         <option value="Hindu">Hindu</option>
                                         <option value="Konghucu">Konghucu</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -681,6 +682,14 @@
         </div>
     </form>
 </div>
+@endif
+
+<script>
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function() {
+        window.location.href = '{{ route("dashboard") }}';
+    };
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

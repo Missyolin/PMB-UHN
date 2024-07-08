@@ -12,11 +12,10 @@ class DataSekolahAsalPendaftar extends Model
     protected $fillable =[
         'id_pendaftar',
         'id_ujian',
+        'nisn',
         'nama_sekolah',
         'jurusan',
         'tahun_lulus',
-        'no_ijazah',
-        'tanggal_ijazah',
         'provinsi_sekolah',
         'kota_kabupaten_sekolah',
         'jumlah_nilai_uan',

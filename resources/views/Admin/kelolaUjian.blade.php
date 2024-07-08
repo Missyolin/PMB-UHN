@@ -68,10 +68,15 @@
                                                                     <h6 class="text-secondary">Jenis Ujian</h6>
                                                                     <h6>{{ $ujian->jenis_ujian }}</h6>
                                                                 </div>
+                                                            </div>
+
+                                                            <div class="row my-2">
                                                                 <div class="col text-center">
                                                                     <h6 class="text-secondary">Metode Ujian</h6>
                                                                     <h6>{{ $ujian->metode_ujian }}</h6>
                                                                 </div>
+                                                                <div class="col"></div>
+                                                                <div class="col"></div>
                                                             </div>
         
                                                             <div class="row my-3">
@@ -138,31 +143,12 @@
                                                             <div class="mx-5 my-3 text-start">
                                                                 <div class="row">
                                                                     <div class="col">
-                                                                    <label for="jenisUjian" class="form-label">Jenis Ujian</label>
-                                                                    <select id="jenisUjian" name="jenisUjian" class="form-select">
-                                                                        <option value="Non-Kedokteran" {{ $ujian->jenis_ujian == 'Non-Kedokteran' ? 'selected' : '' }}>Non-Kedokteran</option>
-                                                                        <option value="Kedokteran" {{ $ujian->jenis_ujian == 'Kedokteran' ? 'selected' : '' }}>Kedokteran</option>
-                                                                    </select>
-                                                                    </div>
-                                                                    <div class="col">
-                                                                    <label for="metodeUjian" class="form-label">Metode Ujian</label>
-                                                                    <select id="metodeUjian" name="metodeUjian" class="form-select">
-                                                                        <option value="Bebas Testing" {{ $ujian->metode_ujian == 'Bebas Testing' ? 'selected' : '' }}>Bebas Testing</option>
-                                                                        <option value="Testing" {{ $ujian->metode_ujian == 'Testing' ? 'selected' : '' }}>Testing</option>
-                                                                    </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="mx-5 my-3 text-start">
-                                                                <div class="row">
-                                                                    <div class="col">
                                                                         <label for="periodeAwal" class="form-label">Periode Awal Pendaftaran</label>
-                                                                        <input type="date" class="form-control" id="periodeAwal" name="periodeAwal" value="{{ \Carbon\Carbon::parse($ujian->tanggal_buka_pendaftaran)->format('Y-m-d') }}">
+                                                                        <input type="date" class="form-control" id="periodeAwal" name="periodeAwal" value="{{ \Carbon\Carbon::parse($ujian->tanggal_buka_pendaftaran)->format('Y-m-d') }}" required>
                                                                     </div>
                                                                     <div class="col">
                                                                         <label for="periodeAkhir" class="form-label">Periode Akhir Pendaftaran</label>
-                                                                        <input type="date" class="form-control" id="periodeAkhir" name="periodeAkhir" value="{{ \Carbon\Carbon::parse($ujian->tanggal_tutup_pendaftaran)->format('Y-m-d') }}">
+                                                                        <input type="date" class="form-control" id="periodeAkhir" name="periodeAkhir" value="{{ \Carbon\Carbon::parse($ujian->tanggal_tutup_pendaftaran)->format('Y-m-d') }}" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -171,10 +157,34 @@
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <label for="tanggalPengumuman" class="form-label">Tanggal Pengumuman</label>
-                                                                        <input type="text" class="form-control" id="tanggalPengumuman" name="tanggalPengumuman" value="{{$ujian->waktu_pengumuman}}">
-                                                                        <div id="passwordHelpBlock" class="form-text">Mis: Realtime</div>
+                                                                        <input type="text" class="form-control" id="tanggalPengumuman" name="tanggalPengumuman" value="{{$ujian->waktu_pengumuman}}" required>
+                                                                        <div id="passwordHelpBlock" class="form-text">Contoh: Realtime</div>
                                                                     </div>
-                                                                    <div class="col"></div>
+                                                                    <div class="col">
+                                                                        <label for="jenisUjian" class="form-label">Jenis Ujian</label>
+                                                                        <select id="jenisUjian" name="jenisUjian" class="form-select" aria-label="Default select example" required>
+                                                                            <option selected hidden>Pilih Jenis Ujian</option>
+                                                                            <option value="Non-Kedokteran" {{ $ujian->jenis_ujian == 'Non-Kedokteran' ? 'selected' : '' }}>Non-Kedokteran</option>
+                                                                            <option value="Kedokteran" {{ $ujian->jenis_ujian == 'Kedokteran' ? 'selected' : '' }}>Kedokteran</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mx-5 my-3 text-start">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label for="metodeUjianEdit" class="form-label">Metode Ujian</label>
+                                                                        <select id="metodeUjianEdit" name="metodeUjianEdit" class="form-select" aria-label="Default select example" required>
+                                                                            <option selected hidden></option>
+                                                                            <option value="Bebas Testing" {{ $ujian->metode_ujian == 'Bebas Testing' ? 'selected' : '' }}>Bebas Testing</option>
+                                                                            <option value="Testing" {{ $ujian->metode_ujian == 'Testing' ? 'selected' : '' }}>Testing</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="biayaUjianEdit" class="form-label">Biaya Ujian</label>
+                                                                        <input id="biayaUjianEdit" name="biayaUjianEdit" class="form-control" type="number" value="{{$ujian->biaya_ujian}}" required>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -376,27 +386,6 @@
                                             <div class="mx-5 my-3 text-start">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <label for="jenisUjian" class="form-label">Jenis Ujian</label>
-                                                        <select id="jenisUjian" name="jenisUjian" class="form-select" aria-label="Default select example" required>
-                                                            <option selected hidden>Pilih Jenis Ujian</option>
-                                                            <option value="Non-Kedokteran">Non-Kedokteran</option>
-                                                            <option value="Kedokteran">Kedokteran</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="metodeUjian" class="form-label">Metode Ujian</label>
-                                                        <select id="metodeUjian" name="metodeUjian" class="form-select" aria-label="Default select example" required>
-                                                            <option selected hidden>Pilih Metode Ujian</option>
-                                                            <option value="Bebas Testing">Bebas Testing</option>
-                                                            <option value="Testing">Testing</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mx-5 my-3 text-start">
-                                                <div class="row">
-                                                    <div class="col">
                                                         <label for="periodeAwal" class="form-label">Periode Awal Pendaftaran</label>
                                                         <input type="date" class="form-control" id="periodeAwal" name="periodeAwal" required>
                                                     </div>
@@ -407,6 +396,8 @@
                                                 </div>
                                             </div>
 
+                                            
+
                                             <div class="mx-5 my-3 text-start">
                                                 <div class="row">
                                                     <div class="col">
@@ -414,7 +405,31 @@
                                                         <input type="text" class="form-control" id="tanggalPengumuman" name="tanggalPengumuman" required>
                                                         <div id="passwordHelpBlock" class="form-text">Contoh: Realtime</div>
                                                     </div>
-                                                    <div class="col"></div>
+                                                    <div class="col">
+                                                        <label for="jenisUjian" class="form-label">Jenis Ujian</label>
+                                                        <select id="jenisUjian" name="jenisUjian" class="form-select" aria-label="Default select example" required>
+                                                            <option selected hidden>Pilih Jenis Ujian</option>
+                                                            <option value="Non-Kedokteran">Non-Kedokteran</option>
+                                                            <option value="Kedokteran">Kedokteran</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mx-5 my-3 text-start">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="metodeUjianTambah" class="form-label">Metode Ujian</label>
+                                                        <select id="metodeUjianTambah" name="metodeUjianTambah" class="form-select" aria-label="Default select example" required>
+                                                            <option selected hidden></option>
+                                                            <option value="Bebas Testing">Bebas Testing</option>
+                                                            <option value="Testing">Testing</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="biayaUjian" class="form-label">Biaya Ujian</label>
+                                                        <input id="biayaUjian" name="biayaUjian" class="form-control" type="number" required>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -448,6 +463,23 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const metodeUjian = document.getElementById('metodeUjianTambah');
+        const biayaUjian = document.getElementById('biayaUjian');
+
+        metodeUjian.addEventListener('change', function () {
+            if (metodeUjian.value === 'Bebas Testing') {
+                biayaUjian.value = 0;
+                biayaUjian.disabled = true;
+            } else {
+                biayaUjian.value = '';
+                biayaUjian.disabled = false;
+            }
+        });
+    });
+</script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const toastLiveExample = document.getElementById('liveToast');
 
@@ -472,4 +504,5 @@
         }
     });
 </script>
+
 @endsection

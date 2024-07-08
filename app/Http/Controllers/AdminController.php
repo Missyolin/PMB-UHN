@@ -92,7 +92,8 @@ class AdminController extends Controller
             'namaUjian' => 'required|string|max:100',
             'gelombangUjian' => 'required|string|max:20',
             'jenisUjian' => 'required|string|max:50',
-            'metodeUjian' => 'required|string|max:50',
+            'metodeUjianTambah' => 'required|string|max:50',
+            'biayaUjian' => 'required|numeric',
             'periodeAwal' => 'required|date',
             'periodeAkhir' => 'required|date|after:periodeAwal', 
             'tanggalPengumuman' => 'required|max:20',
@@ -117,17 +118,19 @@ class AdminController extends Controller
             $ujian->gelombang_ujian = $request->input('gelombangUjian');
             $ujian->tahun_ajaran = $request->input('tahunAjaran');
             $ujian->jenis_ujian = $request->input('jenisUjian');
-            $ujian->metode_ujian = $request->input('metodeUjian');
+            $ujian->metode_ujian = $request->input('metodeUjianTambah');
             $ujian->tanggal_buka_pendaftaran = $request->input('periodeAwal');
             $ujian->tanggal_tutup_pendaftaran = $request->input('periodeAkhir');
+            $ujian->biaya_ujian = $request->input('biayaUjian');
             $ujian->waktu_pengumuman = $request->input('tanggalPengumuman');
 
             $ujian->save();
 
             return redirect()->route('kelola-ujian')->with('success', 'Ujian berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['custom_error' => 'Gagal menambahkan ujian. Silakan coba lagi.'])->withInput();
+            return redirect()->back()->withErrors(['custom_error' => $e->getMessage()])->withInput();
         }
+        
     }
 
     public function updateUjian(Request $request, $id)
@@ -136,7 +139,8 @@ class AdminController extends Controller
             'namaUjian' => 'required|string|max:100',
             'gelombangUjian' => 'required|string|max:20',
             'jenisUjian' => 'required|string|max:50',
-            'metodeUjian' => 'required|string|max:50',
+            'metodeUjianEdit' => 'required|string|max:50',
+            'biayaUjianEdit' => 'required|numeric',
             'periodeAwal' => 'required|date',
             'periodeAkhir' => 'required|date',
             'tanggalPengumuman' => 'required|max:20',
@@ -146,7 +150,8 @@ class AdminController extends Controller
         $ujian->nama_ujian = $request->input('namaUjian');
         $ujian->gelombang_ujian = $request->input('gelombangUjian');
         $ujian->jenis_ujian = $request->input('jenisUjian');
-        $ujian->metode_ujian = $request->input('metodeUjian');
+        $ujian->metode_ujian = $request->input('metodeUjianEdit');
+        $ujian->biaya_ujian = $request->input('biayaUjianEdit');
         $ujian->tanggal_buka_pendaftaran = Carbon::parse($request->input('periodeAwal'))->format('Y-m-d');
         $ujian->tanggal_tutup_pendaftaran = Carbon::parse($request->input('periodeAkhir'))->format('Y-m-d');
         $ujian->waktu_pengumuman = $request->input('tanggalPengumuman');

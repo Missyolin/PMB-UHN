@@ -15,6 +15,8 @@ class JenisUjian extends Model
         'tahun_ajaran',
         'nama_ujian',
         'jenis_ujian',
+        'metode_ujian',
+        'biaya_ujian',
         'tanggal_buka_pendaftaran',
         'tanggal_tutup_pendaftaran',
         'waktu_pengumuman',

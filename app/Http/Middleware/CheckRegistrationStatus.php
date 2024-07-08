@@ -6,25 +6,24 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\PendaftaranUjian;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRegistrationStatus
 {
     public function handle($request, Closure $next)
     {
-        $userId = auth()->user()->id; // Ambil ID pengguna yang sedang login
-        $id_ujian = $request->id_ujian;
-        
-        // Periksa apakah pengguna sudah mendaftar ujian atau belum
+        $userId = Auth::id();
+        $id_ujian = $request->route('id_ujian');
+
+        // Periksa apakah pengguna sudah mendaftar atau session menandakan sudah mendaftar
         $userHasRegisteredForExam = PendaftaranUjian::where('id_pendaftar', $userId)
-            ->where('id_ujian',$id_ujian)
-            ->exists();
+            ->where('id_ujian', $id_ujian)
+            ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $id_ujian;
 
         if ($userHasRegisteredForExam) {
-            // Jika sudah mendaftar, alihkan pengguna ke halaman konfirmasi ujian atau halaman lain yang sesuai
-            return redirect()->route('konfirmasi-formulir');
+            return redirect()->route('preview-formulir', ['id'=>$id_ujian])->with('warning', 'Anda sudah mendaftar untuk ujian ini.');
         }
 
-        // Jika belum mendaftar, lanjutkan permintaan ke tujuan awal
         return $next($request);
     }
 }

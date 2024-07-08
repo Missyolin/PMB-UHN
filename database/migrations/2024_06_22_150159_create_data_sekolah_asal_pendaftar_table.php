@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id('id_data_sekolah_asal_pendaftar');
             $table->unsignedBigInteger('id_pendaftar');
             $table->unsignedBigInteger('id_ujian');
+            $table->string('nisn',10);
             $table->string('nama_sekolah',100);
             $table->string('jurusan',15);
             $table->year('tahun_lulus');
-            $table->string('no_ijazah',20)->nullable();
-            $table->date('tanggal_ijazah')->nullable();
             $table->string('provinsi_sekolah');
             $table->string('kota_kabupaten_sekolah');
             $table->decimal('jumlah_nilai_uan',5,2);

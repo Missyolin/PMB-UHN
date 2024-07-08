@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('nama_ujian', 100);
             $table->string('jenis_ujian', 20);
             $table->string('metode_ujian', 20);
+            $table->decimal('biaya_ujian', 10,2);
             $table->date('tanggal_buka_pendaftaran');
             $table->date('tanggal_tutup_pendaftaran');
             $table->string('waktu_pengumuman', 20);

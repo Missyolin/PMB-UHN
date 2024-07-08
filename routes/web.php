@@ -31,8 +31,8 @@ Route::prefix('/register')->group(function () {
     
 // Route for Logout
 Route::get('/logout', function () {
-    Auth::logout(); // Melakukan logout pengguna
-    return redirect()->route('login'); // Mengarahkan kembali ke halaman login
+    Auth::logout();
+    return redirect()->route('login');
 })->name('logout')->middleware('auth');
 
 // Route for forgot password
@@ -43,15 +43,15 @@ Route::get('/forgot-password-validation/{token}', [accountController::class, 'fo
 Route::post('/forgot-password-validation-act', [accountController::class, 'forgotPasswordValidationAct'])->name('forgot-password-validation-act')->middleware('guest');
     
 Route::middleware(['web','auth'])->group(function() {
-    
     // USER
     Route::get('/dashboard-pmb', [UserController::class, 'getDashboardPMB'])->name('dashboard');
     Route::get('/pembelian-formulir', function() { return view('User.payment');})->name('pembelian-formulir');
     Route::get('/formulir-pmb/{id_ujian}', [UserController::class, 'getFormulir'])
     ->name('formulir-pmb')
-    ->middleware('check.registration');
+    ->middleware('web','check.registration');
 
     Route::post('/simpan-formulir-pmb', [UserController::class, 'simpanFormulir'])->name('save-formulir-pmb');
+    Route::get('/preview-formulir/{id}', [UserController::class, 'previewFormulir'])->name('preview-formulir');
     Route::get('/konfirmasi-formulir', function() { return view('User.konfirmasi');})->name('konfirmasi-formulir');
 
     // ADMIN

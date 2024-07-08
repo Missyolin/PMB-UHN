@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response; 
 use App\Models\TahunAjaran;
 use App\Models\JenisUjian;
 use App\Models\Province;
@@ -74,13 +75,30 @@ class UserController extends Controller
             abort(404, 'Ujian tidak ditemukan');
         }
         
-        return view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran','id'));
+        // Mendapatkan ID user yang sedang login
+        $userId = Auth::id();
+
+        // Periksa apakah pengguna sudah mendaftar ujian atau belum
+        $userHasRegisteredForExam = PendaftaranUjian::where('id_pendaftar', $userId)
+            ->where('id_ujian', $selectedUjian->id_jenis_ujian)
+            ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $selectedUjian->id_jenis_ujian;
+
+        // Ambil halaman formulir
+        $view = view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran', 'id'));
+
+        // Buat response dari view
+        $response = new Response($view);
+
+        // Atur header untuk mengontrol cache
+        $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+
+        // Kembalikan respons
+        return $response;
     }
+
     
     public function simpanFormulir(Request $request)
     {
-        // dd($request->all());
-        // Validasi input sesuai kebutuhan Anda
         try{
 
             $validatedData = $request->validate([
@@ -111,11 +129,10 @@ class UserController extends Controller
                 // Data Asal Sekolah
                 'provSekolah' => 'required|string',
                 'kotaSekolah' => 'required|string',
+                'nisn' => 'required|string|max:10',
                 'asalSekolah' => 'required|string|max:255',
                 'jurusan' => 'required|string|max:15',
                 'tahunLulus' => 'required|integer',
-                'noIjazah' => 'nullable|string|max:20',
-                'tglIjazah' => 'nullable|date',
                 'nilaiUan' => 'required|numeric',
                 'mapelUan' => 'required|integer',
                 // Data Ujian
@@ -183,11 +200,10 @@ class UserController extends Controller
             $dataSekolah->id_ujian = $validatedData['id_ujian'];
             $dataSekolah->provinsi_sekolah = $validatedData['provSekolah'];
             $dataSekolah->kota_kabupaten_sekolah = $validatedData['kotaSekolah'];
+            $dataSekolah->nisn = $validatedData['nisn'];
             $dataSekolah->nama_sekolah = $validatedData['asalSekolah'];
             $dataSekolah->jurusan = $validatedData['jurusan'];
             $dataSekolah->tahun_lulus = $validatedData['tahunLulus'];
-            $dataSekolah->no_ijazah = $validatedData['noIjazah'];
-            $dataSekolah->tanggal_ijazah = $validatedData['tglIjazah'];
             $dataSekolah->jumlah_nilai_uan = $validatedData['nilaiUan'];
             $dataSekolah->jumlah_mata_pelajaran_uan = $validatedData['mapelUan'];
             $dataSekolah->save();
@@ -241,14 +257,52 @@ class UserController extends Controller
             }
             $dataOrangtua->save();
     
-    
-            return redirect()->route('konfirmasi-formulir')->with('success', 'Data formulir berhasil disimpan.');
+            return redirect()->route('preview-formulir',  ['id' => $validatedData['id_ujian']])->with('success', 'Data formulir berhasil disimpan.');
         }catch (Exception $e) {
             // Tangkap kesalahan jika terjadi dan siapkan pesan kesalahan untuk ditampilkan
             $errorMessage = $e->getMessage(); // Ambil pesan error dari Exception
 
             return redirect()->back()->withErrors($errorMessage);
         }
+    }
+
+    public function previewFormulir($id)
+    {
+        // Ambil data ujian berdasarkan ID
+        $ujian = JenisUjian::findOrFail($id);
+
+        // Ambil data pendaftaran ujian berdasarkan id ujian
+        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
+
+        // Ambil id_pendaftar dari pendaftaran
+        $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
+
+        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
+        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->with('user') // Eager load relasi user
+            ->get();
+        
+        $dataOrangtua = DataOrangtuaPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->get();
+        
+        $dataSekolahAsal = DataSekolahAsalPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+            ->where('id_ujian', $id)
+            ->get();
+
+        // Gabungkan data yang relevan ke dalam satu array
+        $peserta = $pendaftaran->map(function ($pendaftar) use ($dataPribadi, $dataOrangtua, $dataSekolahAsal) {
+            $pribadi = $dataPribadi->firstWhere('id_pendaftar', $pendaftar->id_pendaftar);
+            return [
+                'pendaftar' => $pendaftar,
+                'pribadi' => $pribadi,
+                'orangtua' => $dataOrangtua->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'sekolah' => $dataSekolahAsal->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
+                'email' => $pribadi ? $pribadi->user->email : null // Ambil email dari relasi user
+            ];
+        });
+        return view('User.previewFormulir', compact('ujian', 'peserta'));
     }
 
 }
