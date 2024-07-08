@@ -124,6 +124,7 @@ class AdminController extends Controller
             $ujian->biaya_ujian = $request->input('biayaUjian');
             $ujian->waktu_pengumuman = $request->input('tanggalPengumuman');
 
+            
             $ujian->save();
 
             return redirect()->route('kelola-ujian')->with('success', 'Ujian berhasil ditambahkan.');
