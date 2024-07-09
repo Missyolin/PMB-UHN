@@ -17,7 +17,7 @@ class JenisUjianSeeder extends Seeder
         DB::table('jenis_ujian')->insert([
             [
                 'id_jenis_ujian' => 1,
-                'gelombang_ujian' => 'Gelombang I',
+                'gelombang_ujian' => '1',
                 'tahun_ajaran' => 1,
                 'nama_ujian' => 'PMB Bebas Testing',
                 'jenis_ujian' => 'Non-Kedokteran',

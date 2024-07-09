@@ -46,7 +46,7 @@
     <tbody>
         <tr>
         <td scope="row">{{$selectedUjian->metode_ujian}}</td>
-        <td>Gratis</td>
+        <td>Rp. {{$selectedUjian->biaya_ujian}}</td>
         <td>
             <button type="button" class="btn bg-info-subtle fw-semibold text-info">Lihat</button>
         </td>
@@ -71,7 +71,7 @@
                     <div id="list-example" class="list-group mx-5" style="width:20rem;">
                         <a class="list-group-item list-group-item-action" href="#dataPribadi">Data Pribadi</a>
                         <a class="list-group-item list-group-item-action" href="#prodi">Pilihan Program Studi</a>
-                        <a class="list-group-item list-group-item-action" href="#asalSekolah">Data Asal Sekolah</a>
+                        <a class="list-group-item list-group-item-action" href="#asalSekolahh">Data Asal Sekolah</a>
                         <a class="list-group-item list-group-item-action" href="#orangtua">Data Orangtua</a>
                     </div>
                 </div>
@@ -240,7 +240,12 @@
                                 </div>
                                 <div class="col">
                                     <label for="gereja" class="form-label">Gereja</label>
-                                    <input type="text" class="form-control" id="gereja" name="gereja">
+                                    <select class="form-select" id="gereja" name="gereja">
+                                        <option selected hidden></option>
+                                        @foreach($gereja as $church)
+                                        <option value="{{$church->nama_gereja}}">{{$church->nama_gereja}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -273,8 +278,9 @@
                                     <label for="fakultas" class="form-label">Fakultas</label>
                                     <select class="form-select" id="fakultas" name="fakultas" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="FITE">Fakultas Teknik Elektro dan Informatika</option>
-                                        <option value="FE">Fakultas Ekonomi</option>
+                                        @foreach($fakultas as $faculty)
+                                        <option value="{{$faculty->kode_fakultas}}">{{$faculty->nama_fakultas}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
@@ -290,24 +296,26 @@
                                     <label for="prodi1" class="form-label">Program Studi - 1</label>
                                     <select class="form-select" id="prodi1" name="prodi1" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="S1 Informatika">S1 Informatika</option>
-                                        <option value="D4 TRPL">D4 TRPL</option>
+                                        @foreach($program_studi as $prodi)
+                                        <option value="{{$prodi->KodeProdi}}">{{$prodi->Nama_Prodi}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="prodi2" class="form-label">Program Studi - 2</label>
                                     <select class="form-select" id="prodi2" name="prodi2" aria-label="Default select example">
                                         <option selected hidden></option>
-                                        <option value="Manajamen Ekonomi">Manajemen Ekonomi</option>
-                                        <option value="Bisnis Digital">Bisnis Digital</option>
+                                        @foreach($program_studi as $prodi)
+                                            <option value="{{$prodi->KodeProdi}}">{{$prodi->Nama_Prodi}}</option>
+                                        @endforeach
                                     </select>
-                                    <div id="passwordHelpBlock" class="form-text">program studi 2 hanya berlaku untuk Fakultas Ekonomi</div>
+                                    <div id="passwordHelpBlock" class="form-text">program studi 2 hanya berlaku untuk Fakultas Ekonomi dan Bisnis</div>
                                 </div>
                             </div>
                         </div>
                         
 
-                        <h3><div class="fw-semibold" id="asalSekolah">
+                        <h3><div class="fw-semibold" id="asalSekolahh">
                             <div class=" btn btn-sm text-white fw-semibold rounded-pill" style="width: 2rem; height:2rem; background-color:#049DD9;">3</div>
                             Data Asal Sekolah
                         </div></h3>
@@ -346,7 +354,12 @@
                                 </div>
                                 <div class="col">
                                     <label for="asalSekolah" class="form-label">Asal SMA/SMK/MA</label>
-                                    <input class="form-control" type="text" id="asalSekolah" name="asalSekolah" required>
+                                    <select class="form-select" id="asalSekolah" name="asalSekolah" required>
+                                        <option selected hidden></option>
+                                        @foreach($asal_sekolah as $asalSekolah)
+                                        <option value="{{ $asalSekolah }}">{{ $asalSekolah}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -360,6 +373,7 @@
                                         <option selected hidden></option>
                                         <option val="IPA">IPA</option>
                                         <option val="IPS">IPS</option>
+                                        <option val="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -437,7 +451,14 @@
                                     <label for="pendidikanTerakhirAyah" class="form-label">Pendidikan Terakhir</label>
                                     <select class="form-select" id="pendidikanTerakhirAyah" name="pendidikanTerakhirAyah" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="S1">Sarjana</option> 
+                                        <option value="Tidak Sekolah">Tidak Sekolah</option> 
+                                        <option value="SD">SD</option> 
+                                        <option value="SMP">SMP</option> 
+                                        <option value="SMA">SMA</option> 
+                                        <option value="Diploma">Diploma</option> 
+                                        <option value="Sarjana">Sarjana</option> 
+                                        <option value="Master/Magister">Master/Magister</option> 
+                                        <option value="Doktor">Doktor</option> 
                                     </select>
                                 </div>
                             </div>
@@ -450,14 +471,21 @@
                                     <label for="pekerjaanAyah" class="form-label">Pekerjaan</label>
                                     <select class="form-select" id="pekerjaanAyah" name="pekerjaanAyah" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="berkebun">Berkebun</option>
+                                        @foreach($pekerjaan as $jobs)
+                                        <option value="{{$jobs->nama_pekerjaan}}">{{$jobs->nama_pekerjaan}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="penghasilanAyah" class="form-label">Rentang Penghasilan</label>
                                     <select class="form-select" id="penghasilanAyah" name="penghasilanAyah" aria-label="Default select example" required>
                                         <option selected hidden></option> 
-                                        <option value=">= 10.000.000">Lebih atau Samadengan 10.000.000</option> 
+                                        <option value="Rp. 1.000.000">< Rp. 1.000.000</option>
+                                        <option value="Rp. 1.000.000 - Rp. 3.000.000">Rp. 1.000.000 - < Rp. 3.000.000</option>
+                                        <option value="Rp. 3.000.000 - Rp. 5.000.000">Rp 3.000.000 - < Rp. 5.000.000</option>
+                                        <option value="Rp. 5.000.000 - Rp. 7.000.000">Rp. 5.000.000 - < Rp. 7.000.000</option>
+                                        <option value="Rp. 7.000.000 - Rp. 10.000.000">Rp. 7.000.000 - Rp. 10.000.000</option>
+                                        <option value="> Rp.10.000.000">> Rp.10.000.000</option> 
                                     </select>
                                 </div>
                             </div>
@@ -533,7 +561,14 @@
                                     <label for="pendidikanTerakhirIbu" class="form-label">Pendidikan Terakhir</label>
                                     <select class="form-select" id="pendidikanTerakhirIbu" name="pendidikanTerakhirIbu" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="D3">Diploma 3</option>
+                                        <option value="Tidak Sekolah">Tidak Sekolah</option> 
+                                        <option value="SD">SD</option> 
+                                        <option value="SMP">SMP</option> 
+                                        <option value="SMA">SMA</option> 
+                                        <option value="Diploma">Diploma</option> 
+                                        <option value="Sarjana">Sarjana</option> 
+                                        <option value="Master/Magister">Master/Magister</option> 
+                                        <option value="Doktor">Doktor</option>
                                     </select>
                                 </div>
                             </div>
@@ -546,14 +581,21 @@
                                     <label for="pekerjaanIbu" class="form-label">Pekerjaan</label>
                                     <select class="form-select" id="pekerjaanIbu" name="pekerjaanIbu" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value="wirausaha">Wirausaha</option>
+                                        @foreach($pekerjaan as $jobs)
+                                        <option value="{{$jobs->nama_pekerjaan}}">{{$jobs->nama_pekerjaan}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="penghasilanIbu" class="form-label">Rentang Penghasilan</label>
                                     <select class="form-select" id="penghasilanIbu" name="penghasilanIbu" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        <option value=">= 10.000.000">Lebih atau Samadengan 10.000.000</option>
+                                        <option value="Rp. 1.000.000">< Rp. 1.000.000</option>
+                                        <option value="Rp. 1.000.000 - Rp. 3.000.000">Rp. 1.000.000 - < Rp. 3.000.000</option>
+                                        <option value="Rp. 3.000.000 - Rp. 5.000.000">Rp 3.000.000 - < Rp. 5.000.000</option>
+                                        <option value="Rp. 5.000.000 - Rp. 7.000.000">Rp. 5.000.000 - < Rp. 7.000.000</option>
+                                        <option value="Rp. 7.000.000 - Rp. 10.000.000">Rp. 7.000.000 - Rp. 10.000.000</option>
+                                        <option value="> Rp.10.000.000">> Rp.10.000.000</option>
                                     </select>
                                 </div>
                             </div>
@@ -642,14 +684,21 @@
                                     <label for="pekerjaanWali" class="form-label">Pekerjaan</label>
                                     <select class="form-select" id="pekerjaanWali" name="pekerjaanWali" aria-label="Default select example">
                                         <option selected hidden></option>
-                                        <option value="PNS">PNS</option>
+                                        @foreach($pekerjaan as $jobs)
+                                        <option value="{{$jobs->nama_pekerjaan}}">{{$jobs->nama_pekerjaan}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="penghasilanWali" class="form-label">Rentang Penghasilan</label>
                                     <select class="form-select" id="penghasilanWali" name="penghasilanWali" aria-label="Default select example">
                                         <option selected hidden></option>
-                                        <option value="5.000.000>= penghasilan <7.000.000">5.000.000>= penghasilan <7.000.000</option>
+                                        <option value="Rp. 1.000.000">< Rp. 1.000.000</option>
+                                        <option value="Rp. 1.000.000 - Rp. 3.000.000">Rp. 1.000.000 - < Rp. 3.000.000</option>
+                                        <option value="Rp. 3.000.000 - Rp. 5.000.000">Rp 3.000.000 - < Rp. 5.000.000</option>
+                                        <option value="Rp. 5.000.000 - Rp. 7.000.000">Rp. 5.000.000 - < Rp. 7.000.000</option>
+                                        <option value="Rp. 7.000.000 - Rp. 10.000.000">Rp. 7.000.000 - Rp. 10.000.000</option>
+                                        <option value="> Rp.10.000.000">> Rp.10.000.000</option>
                                     </select>
                                 </div>
                             </div>
@@ -692,62 +741,142 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const provinsiSelect = document.getElementById('provinsi');
-    const kotaKabupatenSelect = document.getElementById('kota_kabupaten');
-    const kecamatanSelect = document.getElementById('kecamatan');
-
-    const provSekolahSelect = document.getElementById('provSekolah');
-    const kotaSekolahSelect = document.getElementById('kotaSekolah');
-
-    // Fungsi untuk menampilkan/menyembunyikan opsi berdasarkan atribut data
-    function filterOptions(selectElement, dataAttribute, filterValue) {
-        Array.from(selectElement.options).forEach(option => {
-            if (option.value === '' || option.getAttribute(dataAttribute) === filterValue) {
-                option.style.display = '';
-            } else {
-                option.style.display = 'none';
-            }
-        });
-        selectElement.selectedIndex = 0; // Reset pilihan
-    }
-
-    // Event listener untuk perubahan dropdown Provinsi
-    if (provinsiSelect && kotaKabupatenSelect) {
-        provinsiSelect.addEventListener('change', function() {
-            filterOptions(kotaKabupatenSelect, 'data-province-name', this.value);
-            filterOptions(kecamatanSelect, 'data-regency-name', ''); // Reset kecamatan
-        });
-    }
-
-    // Event listener untuk perubahan dropdown Kota/Kabupaten
-    if (kotaKabupatenSelect && kecamatanSelect) {
-        kotaKabupatenSelect.addEventListener('change', function() {
-            filterOptions(kecamatanSelect, 'data-regency-name', this.value);
-        });
-    }
-
-    // Simpan semua opsi Kota/Kabupaten untuk dropdown Sekolah
-    const allKotaSekolahOptions = Array.from(kotaSekolahSelect ? kotaSekolahSelect.options : []);
-
-    // Event listener untuk perubahan dropdown Provinsi Sekolah
-    if (provSekolahSelect && kotaSekolahSelect) {
-        provSekolahSelect.addEventListener('change', function() {
-            const selectedProvinceName = this.value;
-            kotaSekolahSelect.innerHTML = '<option selected hidden></option>'; // Kosongkan opsi Kota/Kabupaten
-
-            allKotaSekolahOptions.forEach(option => {
-                if (option.getAttribute('data-province-name') === selectedProvinceName) {
-                    kotaSekolahSelect.appendChild(option.cloneNode(true));
-                }
+    $(document).ready(function() {
+            $("#asalSekolah").select2({
+                placeholder: 'Pilih Asal Sekolah',
+                allowClear: true
             });
         });
-    }
-});
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const provinsiSelect = document.getElementById('provinsi');
+        const kotaKabupatenSelect = document.getElementById('kota_kabupaten');
+        const kecamatanSelect = document.getElementById('kecamatan');
 
+        const provSekolahSelect = document.getElementById('provSekolah');
+        const kotaSekolahSelect = document.getElementById('kotaSekolah');
 
+        // Fungsi untuk menampilkan/menyembunyikan opsi berdasarkan atribut data
+        function filterOptions(selectElement, dataAttribute, filterValue) {
+            Array.from(selectElement.options).forEach(option => {
+                if (option.value === '' || option.getAttribute(dataAttribute) === filterValue) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            selectElement.selectedIndex = 0; // Reset pilihan
+        }
+
+        // Event listener untuk perubahan dropdown Provinsi
+        if (provinsiSelect && kotaKabupatenSelect) {
+            provinsiSelect.addEventListener('change', function() {
+                filterOptions(kotaKabupatenSelect, 'data-province-name', this.value);
+                filterOptions(kecamatanSelect, 'data-regency-name', ''); // Reset kecamatan
+            });
+        }
+
+        // Event listener untuk perubahan dropdown Kota/Kabupaten
+        if (kotaKabupatenSelect && kecamatanSelect) {
+            kotaKabupatenSelect.addEventListener('change', function() {
+                filterOptions(kecamatanSelect, 'data-regency-name', this.value);
+            });
+        }
+
+        // Simpan semua opsi Kota/Kabupaten untuk dropdown Sekolah
+        const allKotaSekolahOptions = Array.from(kotaSekolahSelect ? kotaSekolahSelect.options : []);
+
+        // Event listener untuk perubahan dropdown Provinsi Sekolah
+        if (provSekolahSelect && kotaSekolahSelect) {
+            provSekolahSelect.addEventListener('change', function() {
+                const selectedProvinceName = this.value;
+                kotaSekolahSelect.innerHTML = '<option selected hidden></option>'; // Kosongkan opsi Kota/Kabupaten
+
+                allKotaSekolahOptions.forEach(option => {
+                    if (option.getAttribute('data-province-name') === selectedProvinceName) {
+                        kotaSekolahSelect.appendChild(option.cloneNode(true));
+                    }
+                });
+            });
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fakultasSelect = document.getElementById('fakultas');
+        const prodi2Select = document.getElementById('prodi2');
+
+        // Event listener untuk perubahan dropdown Fakultas
+        if (fakultasSelect && prodi2Select) {
+            fakultasSelect.addEventListener('change', function() {
+                // Ambil nilai dari opsi yang dipilih
+                const selectedFakultas = this.value;
+                
+                // Jika kode fakultas bukan 'EK', disable select prodi2
+                if (selectedFakultas !== 'EK') {
+                    prodi2Select.disabled = true;
+                } else {
+                    // Jika kode fakultas 'EK', enable select prodi2
+                    prodi2Select.disabled = false;
+                }
+            });
+
+            // Trigger change event saat halaman pertama kali dimuat
+            fakultasSelect.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fakultasSelect = document.getElementById('fakultas');
+        const prodiSelect = document.getElementById('prodi1');
+        const prodi2Select = document.getElementById('prodi2');
+        const prodiOptions = {!! json_encode($program_studi) !!}; // Ambil data program studi dari controller
+
+        // Fungsi untuk menampilkan/menyembunyikan opsi berdasarkan atribut data
+        function filterOptions(selectElement, dataAttribute, filterValue) {
+            Array.from(selectElement.options).forEach(option => {
+                if (option.value === '' || option.getAttribute(dataAttribute) === filterValue) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            selectElement.selectedIndex = 0; // Reset pilihan
+        }
+
+        // Event listener untuk perubahan dropdown Fakultas
+        if (fakultasSelect && prodiSelect && prodi2Select) {
+            fakultasSelect.addEventListener('change', function() {
+                const selectedKodeFakultas = this.value;
+                // Kosongkan dropdown program studi
+                prodiSelect.innerHTML = '<option value="" selected hidden></option>';
+                prodi2Select.innerHTML = '<option value="" selected hidden></option>';
+
+                // Tampilkan program studi yang sesuai dengan fakultas yang dipilih
+                prodiOptions.forEach(prodi => {
+                    if (prodi.KodeFakultas === selectedKodeFakultas) {
+                        // Buat option baru untuk prodi1
+                        const option1 = document.createElement('option');
+                        option1.value = prodi.KodeProdi;
+                        option1.textContent = prodi.Nama_Prodi;
+                        prodiSelect.appendChild(option1);
+
+                        // Buat option baru untuk prodi2 (duplikat dari option1)
+                        const option2 = document.createElement('option');
+                        option2.value = prodi.KodeProdi;
+                        option2.textContent = prodi.Nama_Prodi;
+                        prodi2Select.appendChild(option2);
+                    }
+                });
+            });
+        }
+    });
+</script>
 
 
 @endsection

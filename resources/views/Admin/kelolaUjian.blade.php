@@ -31,7 +31,7 @@
                                 @foreach($tahun->jenisUjian as $ujian)
                                     <li class="list-group-item">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ujian-{{$ujian->id_jenis_ujian}}" aria-expanded="false" aria-controls="flush-collapseOne">
-                                            {{ $counter++ }}. {{$ujian->nama_ujian}} - {{$ujian->gelombang_ujian}}
+                                            {{ $counter++ }}. {{$ujian->nama_ujian}} - Gelombang {{$ujian->gelombang_ujian}}
 
                                             @if($ujian->flag_is_ujian_opened)
                                                 <span class="badge text-bg-primary ms-2">Dibuka</span>

@@ -22,7 +22,7 @@
 
                             @if($ujian->flag_is_ujian_opened)
                             <div class="card-img-overlay text-center text-white mt-4" style="">
-                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">{{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
+                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">Gelombang {{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
                             </div>
                             @else
                             <div class="card-img-overlay text-center text-black mt-4" style="">
@@ -62,7 +62,7 @@
                                         <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">{{$ujian->metode_ujian}}</span></p>
                                     </div>
                                     <div class="col">
-                                        <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Gratis</span></p>
+                                        <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Rp. {{$ujian->biaya_ujian}}</span></p>
                                     </div>
                                 </div>
                                 <hr>

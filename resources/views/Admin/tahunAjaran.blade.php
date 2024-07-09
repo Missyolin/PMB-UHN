@@ -58,7 +58,7 @@
                                 <ol class="list-group list-group-numbered">
                                     @foreach($item->jenisUjian as $ujian)
                                         <li class="list-group-item">
-                                            {{$ujian->nama_ujian}} - {{$ujian->gelombang_ujian}}
+                                            {{$ujian->nama_ujian}} - Gelombang {{$ujian->gelombang_ujian}}
 
                                             @if($ujian->flag_is_ujian_opened)
                                                 <span class="badge text-bg-primary ms-2">Dibuka</span>

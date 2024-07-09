@@ -14,6 +14,11 @@ use App\Models\DataSekolahAsalPendaftar;
 use App\Models\DataOrangtuaPendaftar;
 use App\Models\PendaftaranUjian;
 use App\Models\District;
+use App\Models\AsalSekolah;
+use App\Models\Fakultas;
+use App\Models\ProgramStudi;
+use App\Models\Pekerjaan;
+use App\Models\Gereja;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -48,7 +53,6 @@ class UserController extends Controller
         $this->middleware('check.registration:id_ujian')->only('getFormulir');
     }
 
-
     public function getFormulir($id)
     {
         Carbon::setLocale('id'); 
@@ -57,6 +61,11 @@ class UserController extends Controller
         $regencies = Regency::all();
         $districts = District::all();
         $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+        $asal_sekolah = AsalSekolah::all()->pluck('Nama');
+        $fakultas = Fakultas::all();
+        $program_studi = ProgramStudi::all();
+        $pekerjaan = Pekerjaan::all();
+        $gereja = Gereja::all();
 
         // Filter jenis ujian berdasarkan ID
         $selectedUjian = null;
@@ -84,7 +93,7 @@ class UserController extends Controller
             ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $selectedUjian->id_jenis_ujian;
 
         // Ambil halaman formulir
-        $view = view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran', 'id'));
+        $view = view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran', 'id', 'asal_sekolah', 'fakultas', 'program_studi', 'pekerjaan', 'gereja'));
 
         // Buat response dari view
         $response = new Response($view);
@@ -95,7 +104,6 @@ class UserController extends Controller
         // Kembalikan respons
         return $response;
     }
-
     
     public function simpanFormulir(Request $request)
     {
@@ -141,7 +149,7 @@ class UserController extends Controller
                 'namaAyah' => 'required|string|max:100',
                 'tlAyah' => 'required|date',
                 'agamaAyah' => 'required|string|max:10',
-                'pendidikanTerakhirAyah' => 'required|string|max:10',
+                'pendidikanTerakhirAyah' => 'required|string|max:20',
                 'pekerjaanAyah' => 'required|string|max:50',
                 'penghasilanAyah' => 'required|string|max:50',
                 'alamatAyah' => 'required|string|max:255',
@@ -150,7 +158,7 @@ class UserController extends Controller
                 'namaIbu' => 'required|string|max:100',
                 'tlIbu' => 'required|date',
                 'agamaIbu' => 'required|string|max:10',
-                'pendidikanTerakhirIbu' => 'required|string|max:10',
+                'pendidikanTerakhirIbu' => 'required|string|max:20',
                 'pekerjaanIbu' => 'required|string|max:50',
                 'penghasilanIbu' => 'required|string|max:50',
                 'alamatIbu' => 'required|string|max:255',
@@ -159,12 +167,13 @@ class UserController extends Controller
                 'namaWali' => 'nullable|string|max:100',
                 'tlWali' => 'nullable|date',
                 'agamaWali' => 'nullable|string|max:10',
-                'pendidikanTerakhirWali' => 'nullable|string|max:10',
+                'pendidikanTerakhirWali' => 'nullable|string|max:20',
                 'pekerjaanWali' => 'nullable|string|max:50',
                 'penghasilanWali' => 'nullable|string|max:50',
                 'alamatWali' => 'nullable|string|max:255',
                 'noWali' => 'nullable|string|max:15',
             ]);
+
     
             // Mendapatkan ID user yang sedang login
             $userId = Auth::id();
@@ -214,7 +223,18 @@ class UserController extends Controller
             $pendaftaranUjian->id_ujian = $validatedData['id_ujian'];
             $pendaftaranUjian->fakultas = $validatedData['fakultas'];
             $pendaftaranUjian->prodi_1 = $validatedData['prodi1'];
-            $pendaftaranUjian->prodi_2 = $validatedData['prodi2'];
+            $pendaftaranUjian->prodi_2 = $validatedData['prodi2'] ?? null;
+
+            // NOMOR UJIAN
+            $tahun = date('y');
+            $jenisUjian = JenisUjian::findOrFail($validatedData['id_ujian']);
+            $gelombang = $jenisUjian->gelombang_ujian;
+            $nomorUrut = sprintf('%04d', PendaftaranUjian::count() + 1); // Misalnya menggunakan jumlah pendaftaran + 1
+            // Format nomor ujian sesuai dengan yang diinginkan
+            $nomorUjian = "{$validatedData['fakultas']}-{$tahun}-{$gelombang}-{$nomorUrut}";
+
+            $pendaftaranUjian->nomor_ujian = $nomorUjian;
+
             $pendaftaranUjian->save();
     
             // Simpan data ayah
@@ -307,15 +327,21 @@ class UserController extends Controller
             ->where('id_ujian', $id)
             ->get();
 
+        // Ambil data fakultas untuk nama_fakultas
+        $fakultas = Fakultas::all()->keyBy('kode_fakultas');
+
         // Gabungkan data yang relevan ke dalam satu array
-        $peserta = $pendaftaran->map(function ($pendaftar) use ($dataPribadi, $dataOrangtua, $dataSekolahAsal) {
+        $peserta = $pendaftaran->map(function ($pendaftar) use ($dataPribadi, $dataOrangtua, $dataSekolahAsal, $fakultas) {
             $pribadi = $dataPribadi->firstWhere('id_pendaftar', $pendaftar->id_pendaftar);
             return [
                 'pendaftar' => $pendaftar,
                 'pribadi' => $pribadi,
                 'orangtua' => $dataOrangtua->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
                 'sekolah' => $dataSekolahAsal->firstWhere('id_pendaftar', $pendaftar->id_pendaftar),
-                'email' => $pribadi ? $pribadi->user->email : null // Ambil email dari relasi user
+                'email' => $pribadi ? $pribadi->user->email : null, // Ambil email dari relasi user
+                'nama_fakultas' => $fakultas[$pendaftar->fakultas]->nama_fakultas ?? 'Fakultas tidak ditemukan',
+                'nama_prodi1' => $pendaftar->prodi1->Nama_Prodi ?? 'Prodi 1 tidak ditemukan',
+                'nama_prodi2' => $pendaftar->prodi2->Nama_Prodi ?? ''
             ];
         });
 
@@ -347,7 +373,7 @@ class UserController extends Controller
         }
         $konfirmasiStatus = $pendaftaran->first()->flag_is_formulir_verified == 1;
 
-        return view('User.konfirmasi', compact('selectedUjian', 'dataPribadi', 'konfirmasiStatus'));
+        return view('User.konfirmasi', compact('selectedUjian', 'dataPribadi', 'konfirmasiStatus', 'pendaftaran'));
     }
 
 

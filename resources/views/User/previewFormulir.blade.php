@@ -34,14 +34,12 @@
     <thead>
         <tr>
         <th scope="col">Metode Ujian</th>
-        <th scope="col">Biaya Formulir</th>
         <th scope="col">Lihat Informasi Ujian</th>
         </tr>
     </thead>
     <tbody>
         <tr>
         <td scope="row">{{$selectedUjian->metode_ujian}}</td>
-        <td>Gratis</td>
         <td>
             <a href="{{route('konfirmasi-formulir', ['id' => $selectedUjian->id_jenis_ujian])}}" class="btn bg-info-subtle fw-semibold text-info">Lihat</a>
         </td>
@@ -206,7 +204,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="fakultas" class="form-label">Fakultas</label>
-                                <input disabled type="text" class="form-control" id="fakultas" name="fakultas" disabled value="{{$item['pendaftar']->fakultas}}">
+                                <input disabled type="text" class="form-control" id="fakultas" name="fakultas" disabled value="{{$item['nama_fakultas']}}">
                             </div>
                             <div class="col">
 
@@ -219,11 +217,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="prodi1" class="form-label">Program Studi - 1</label>
-                                <input disabled type="text" class="form-control" id="prodi1" name="prodi1" disabled value="{{$item['pendaftar']->prodi_1}}">
+                                <input disabled type="text" class="form-control" id="prodi1" name="prodi1" disabled value="{{$item['nama_prodi1']}}">
                             </div>
                             <div class="col">
                                 <label for="prodi2" class="form-label">Program Studi - 2</label>
-                                <input disabled type="text" class="form-control" id="prodi2" name="prodi2" disabled value="{{$item['pendaftar']->prodi_2}}">
+                                <input disabled type="text" class="form-control" id="prodi2" name="prodi2" disabled value="{{$item['nama_prodi2']}}">
                                 <div id="passwordHelpBlock" class="form-text">program studi 2 hanya berlaku untuk Fakultas Ekonomi</div>
                             </div>
                         </div>

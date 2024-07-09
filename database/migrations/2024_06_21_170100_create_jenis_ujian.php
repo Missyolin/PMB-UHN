@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('jenis_ujian', function (Blueprint $table) {
             $table->id('id_jenis_ujian');
-            $table->string('gelombang_ujian', 20);
+            $table->integer('gelombang_ujian');
             $table->unsignedBigInteger('tahun_ajaran'); // Menggunakan unsignedBigInteger untuk foreign key
             $table->string('nama_ujian', 100);
             $table->string('jenis_ujian', 20);

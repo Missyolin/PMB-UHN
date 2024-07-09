@@ -16,6 +16,14 @@
                     @endforeach
                 </div>
                 <div class="col">
+                    <h6 class="text-secondary">Nomor Ujian</h6>
+                    @foreach($pendaftaran as $daftar)
+                        <h6>{{ $daftar->nomor_ujian }}</h6>
+                    @endforeach
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
                     <h6 class="text-secondary">Jenis Ujian</h6>
                     <h6>{{ $selectedUjian->nama_ujian }}</h6>
                 </div>
@@ -38,9 +46,11 @@
             <div class="alert alert-primary my-5 mx-5" role="alert">
                 <h4 class="alert-heading">Formulir kamu berhasil dikirimkan.</h4>
                 <hr class="mx-5">
-                <p>Silahkan mengerjakan ujian sampai batas akhir periode pendaftaran PMB Reguler. Pengumuman kelulusan keluar ketika anda sudah menyelesaikan  ujian anda.<br>Link ujian akan diberikan ketika Admin PMB sudah mengkonfirmasi formulir anda</p>
+                <p>Silahkan lihat informasi nomor ujian anda lalu kerjakan ujian sampai batas akhir periode pendaftaran PMB Reguler. Pengumuman kelulusan keluar ketika anda sudah menyelesaikan  ujian anda.<br>Link ujian akan diberikan ketika Admin PMB sudah mengkonfirmasi formulir anda</p>
                 @if($konfirmasiStatus)
-                <button class="btn text-white fw-semibold" style="background-color:#049DD9">Mulai Ujian</button>
+                <div class="d-grid gap-2 col-4 mx-auto">
+                    <button class="btn text-white fw-semibold" style="background-color:#049DD9">Mulai Ujian</button>
+                </div>
                 @endif
             </div>
             @endif

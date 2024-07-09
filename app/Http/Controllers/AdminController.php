@@ -90,7 +90,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'namaUjian' => 'required|string|max:100',
-            'gelombangUjian' => 'required|string|max:20',
+            'gelombangUjian' => 'required|integer',
             'jenisUjian' => 'required|string|max:50',
             'metodeUjianTambah' => 'required|string|max:50',
             'biayaUjian' => 'required|numeric',

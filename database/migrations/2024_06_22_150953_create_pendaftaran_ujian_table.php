@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_pendaftaran_ujian');
             $table->unsignedBigInteger('id_pendaftar');
             $table->unsignedBigInteger('id_ujian');
+            $table->string('nomor_ujian',20);
             $table->string('fakultas', 30);
             $table->string('prodi_1', 30);
             $table->string('prodi_2', 30)->nullable();
