@@ -14,7 +14,7 @@
   </div>
   <div class="card-body">
     <div id="passwordHelpBlock" class="form-text">Unduh data pendaftar yang sudah diverifikasi</div>
-    <button class="btn btn-success mb-3"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Unduh Data Pendaftar</button>
+    <a href="{{ route('export-ujian', $ujian->id_jenis_ujian) }}" class="btn btn-success mb-3"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Unduh Data Pendaftar</a>
     <table class="table table-striped align-middle">
         <thead>
             <tr>

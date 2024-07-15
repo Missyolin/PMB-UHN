@@ -41,4 +41,10 @@ class DataOrangtuaPendaftar extends Model
    ];
 
    protected $primaryKey = 'id_data_orangtua_pendaftar';
+
+   public function pendaftaranUjian()
+    {
+        // Assuming there is a foreign key 'id_pendaftar' in this model
+        return $this->belongsTo(PendaftaranUjian::class, 'id_pendaftar', 'id_pendaftar');
+    }
 }

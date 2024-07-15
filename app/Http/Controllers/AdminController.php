@@ -12,6 +12,8 @@ use App\Models\DataSekolahAsalPendaftar;
 use App\Models\Fakultas;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel; 
+use App\Exports\PendaftarMultipleExport;
 
 
 class AdminController extends Controller
@@ -273,5 +275,21 @@ class AdminController extends Controller
 
         return redirect()->route('konfirmasi-admin',['id' => $idUjian])->with('success', 'Formulir peserta berhasil diverifikasi.');
     }
+
+    public function exportUjian($id)
+{
+    $jenisUjian = JenisUjian::with('tahunAjaran')->findOrFail($id);
+    
+    if (!$jenisUjian->tahunAjaran) {
+        dd('Tahun ajaran tidak ditemukan untuk jenis ujian ini.');
+    }
+
+    $namaUjian = $jenisUjian->nama_ujian;
+    $tahunAjaran = $jenisUjian->tahunAjaran->tahun_ajaran;
+
+    $fileName = 'Rekap Pendaftar_' . $namaUjian . '_T.A ' . $tahunAjaran . '.xlsx';
+
+    return Excel::download(new PendaftarMultipleExport($id), $fileName);
+}
 
 }

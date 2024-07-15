@@ -21,4 +21,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(JenisUjian::class, 'tahun_ajaran', 'id_tahun_ajaran');
     }
+
+    public function getTahunAjaranAttribute()
+    {
+        return $this->tahun_mulai . '-' . $this->tahun_selesai;
+    }
 }
