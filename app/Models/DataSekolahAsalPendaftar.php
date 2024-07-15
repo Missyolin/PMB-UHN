@@ -28,4 +28,9 @@ class DataSekolahAsalPendaftar extends Model
         // Assuming there is a foreign key 'id_pendaftar' in this model
         return $this->belongsTo(PendaftaranUjian::class, 'id_pendaftar', 'id_pendaftar');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

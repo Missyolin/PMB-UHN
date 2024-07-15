@@ -291,6 +291,14 @@ class UserController extends Controller
 
     public function previewFormulir($id)
     {
+            // Pastikan pengguna sudah login
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized access');
+        }
+
+        // Ambil id_pendaftar dari pengguna yang sedang login
+        $id_pendaftar = auth()->user()->id;
+
         // Ambil data ujian berdasarkan ID
         $selectedUjian = null;
         $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
@@ -310,24 +318,30 @@ class UserController extends Controller
             abort(404, 'Ujian tidak ditemukan');
         }
 
-        // Ambil data pendaftaran ujian berdasarkan id ujian
-        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
+        // Ambil data pendaftaran ujian berdasarkan id ujian dan id_pendaftar yang sedang login
+        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)
+            ->where('id_pendaftar', $id_pendaftar)
+            ->get();
 
-        // Ambil id_pendaftar dari pendaftaran
-        $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
+        // Jika tidak ada data pendaftaran, berikan pesan atau handle sesuai kebutuhan aplikasi
+        if ($pendaftaran->isEmpty()) {
+            abort(404, 'Anda belum mendaftar pada ujian ini');
+        }
 
         // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
-        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+        $dataPribadi = DataPribadiPendaftar::where('id_pendaftar', $id_pendaftar)
             ->where('id_ujian', $id)
             ->with('user') // Eager load relasi user
             ->get();
         
-        $dataOrangtua = DataOrangtuaPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+        $dataOrangtua = DataOrangtuaPendaftar::where('id_pendaftar', $id_pendaftar)
             ->where('id_ujian', $id)
+            ->with('user') 
             ->get();
         
-        $dataSekolahAsal = DataSekolahAsalPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+        $dataSekolahAsal = DataSekolahAsalPendaftar::where('id_pendaftar', $id_pendaftar)
             ->where('id_ujian', $id)
+            ->with('user') 
             ->get();
 
         // Ambil data fakultas untuk nama_fakultas
