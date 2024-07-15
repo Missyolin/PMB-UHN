@@ -21,7 +21,7 @@ class CheckRegistrationStatus
             ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $id_ujian;
 
         if ($userHasRegisteredForExam) {
-            return redirect()->route('preview-formulir', ['id'=>$id_ujian])->with('warning', 'Anda sudah mendaftar untuk ujian ini.');
+            return redirect()->route('preview-formulir', ['id'=>$id_ujian]);
         }
 
         return $next($request);

@@ -46,7 +46,11 @@
     <tbody>
         <tr>
         <td scope="row">{{$selectedUjian->metode_ujian}}</td>
+        @if($selectedUjian->biaya_ujian == 0.00)
+        <td>Gratis</td>
+        @else
         <td>Rp. {{$selectedUjian->biaya_ujian}}</td>
+        @endif
         <td>
             <button type="button" class="btn bg-info-subtle fw-semibold text-info">Lihat</button>
         </td>
@@ -278,9 +282,8 @@
                                     <label for="fakultas" class="form-label">Fakultas</label>
                                     <select class="form-select" id="fakultas" name="fakultas" aria-label="Default select example" required>
                                         <option selected hidden></option>
-                                        @foreach($fakultas as $faculty)
-                                        <option value="{{$faculty->kode_fakultas}}">{{$faculty->nama_fakultas}}</option>
-                                        @endforeach
+                                        @foreach($fakultasTersedia as $fakultas)
+                                        <option value="{{ $fakultas->kode_fakultas }}">{{ $fakultas->nama_fakultas }}</option>                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
@@ -480,7 +483,7 @@
                                     <label for="penghasilanAyah" class="form-label">Rentang Penghasilan</label>
                                     <select class="form-select" id="penghasilanAyah" name="penghasilanAyah" aria-label="Default select example" required>
                                         <option selected hidden></option> 
-                                        <option value="Rp. 1.000.000">< Rp. 1.000.000</option>
+                                        <option value="< Rp. 1.000.000">< Rp. 1.000.000</option>
                                         <option value="Rp. 1.000.000 - Rp. 3.000.000">Rp. 1.000.000 - < Rp. 3.000.000</option>
                                         <option value="Rp. 3.000.000 - Rp. 5.000.000">Rp 3.000.000 - < Rp. 5.000.000</option>
                                         <option value="Rp. 5.000.000 - Rp. 7.000.000">Rp. 5.000.000 - < Rp. 7.000.000</option>

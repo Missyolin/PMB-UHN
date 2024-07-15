@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->date('tanggal_buka_pendaftaran');
             $table->date('tanggal_tutup_pendaftaran');
             $table->string('waktu_pengumuman', 20);
+            $table->string('fakultas_tersedia',50);
             $table->boolean('flag_is_ujian_opened')->default(false);
             $table->boolean('flag_is_ujian_hidden')->default(true);
             $table->text('link_ujian')->nullable();

@@ -20,6 +20,7 @@ class JenisUjian extends Model
         'tanggal_buka_pendaftaran',
         'tanggal_tutup_pendaftaran',
         'waktu_pengumuman',
+        'fakultas_tersedia',
         'flag_is_ujian_opened',
         'flag_is_ujian_hidden',
         'link_ujian'
@@ -31,4 +32,13 @@ class JenisUjian extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran', 'id_tahun_ajaran');
     }
+
+    public function fakultasTersedia()
+    {
+        return $this->belongsTo(Fakultas::class, 'fakultas_tersedia', 'kode_fakultas');
+    }
+
+    protected $casts = [
+        'fakultas_tersedia' => 'array',
+    ];
 }

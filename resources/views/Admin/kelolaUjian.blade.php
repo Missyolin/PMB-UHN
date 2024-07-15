@@ -188,6 +188,31 @@
                                                                 </div>
                                                             </div>
 
+                                                            <br>
+                                                            <div class="mx-5 my-3 text-start">
+                                                                <h6>Pilih Fakultas yang dibuka</h6>
+                                                                <hr>
+                                                                <div class="row row-cols-2">
+                                                                    @foreach($fakultas as $item)
+                                                                    <div class="col">
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                    type="checkbox"
+                                                                                    name="fakultas_tersedia[]"
+                                                                                    value="{{ $item->kode_fakultas }}"
+                                                                                    aria-label="Checkbox for following text input"
+                                                                                    {{ in_array($item->kode_fakultas, explode(',', $ujian->fakultas_tersedia)) ? 'checked' : '' }}>
+                                                                            </div>
+                                                                            <input type="text" class="form-control"
+                                                                                aria-label="Text input with checkbox"
+                                                                                value="{{ $item->nama_fakultas }}"
+                                                                                readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-success">Simpan Perubahan</button>
@@ -355,9 +380,10 @@
                                         <!-- END OF DELETE UJIAN -->
                                     </li>
                                 @endforeach
-                                
+
                             @endif
                         </div>
+
                         <!-- MODAL TAMBAH UJIAN -->
                         <div class="modal modal-lg fade" id="tambahUjian-{{$tahun->id_tahun_ajaran}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -432,6 +458,30 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <br>
+                                            <div class="mx-5 my-3 text-start">
+                                                <h6>Pilih Fakultas yang dibuka</h6>
+                                                <hr>
+                                                <div class="row row-cols-2">
+                                                    @foreach($fakultas as $item)
+                                                    <div class="col">
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-text">
+                                                                <input 
+                                                                    class="form-check-input mt-0" 
+                                                                    type="checkbox" 
+                                                                    name="fakultas_tersedia[]" 
+                                                                    value="{{ $item->kode_fakultas }}" 
+                                                                    aria-label="Checkbox for following text input">
+                                                            </div>
+                                                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="{{ $item->nama_fakultas }}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+
 
                                         </div>
                                         <div class="modal-footer">

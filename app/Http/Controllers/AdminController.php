@@ -9,6 +9,7 @@ use App\Models\PendaftaranUjian;
 use App\Models\DataPribadiPendaftar;
 use App\Models\DataOrangtuaPendaftar;
 use App\Models\DataSekolahAsalPendaftar;
+use App\Models\Fakultas;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,6 +29,7 @@ class AdminController extends Controller
         Carbon::setLocale('id');
 
         $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+        $fakultas = Fakultas::all();
 
         foreach ($tahun_ajaran as $tahun) {
             foreach ($tahun->jenisUjian as $ujian) {
@@ -42,8 +44,10 @@ class AdminController extends Controller
             }
         }
 
+
         return view('Admin.kelolaUjian', [
             'tahun_ajaran' => $tahun_ajaran,
+            'fakultas' => $fakultas,
         ]);
     }
 
@@ -95,8 +99,10 @@ class AdminController extends Controller
             'metodeUjianTambah' => 'required|string|max:50',
             'biayaUjian' => 'required|numeric',
             'periodeAwal' => 'required|date',
-            'periodeAkhir' => 'required|date|after:periodeAwal', 
+            'periodeAkhir' => 'required|date|after:periodeAwal',
             'tanggalPengumuman' => 'required|max:20',
+            'fakultas_tersedia' => 'nullable|array',
+            'fakultas_tersedia.*' => 'exists:fakultas,kode_fakultas', // Pastikan kode_fakultas valid
         ]);
 
         $validator = Validator::make($request->all(), []);
@@ -124,14 +130,15 @@ class AdminController extends Controller
             $ujian->biaya_ujian = $request->input('biayaUjian');
             $ujian->waktu_pengumuman = $request->input('tanggalPengumuman');
 
-            
+            // Menggunakan implode untuk menyimpan array fakultas_tersedia sebagai string di database
+            $ujian->fakultas_tersedia = implode(',', $request->input('fakultas_tersedia', []));
+
             $ujian->save();
 
             return redirect()->route('kelola-ujian')->with('success', 'Ujian berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['custom_error' => $e->getMessage()])->withInput();
         }
-        
     }
 
     public function updateUjian(Request $request, $id)
@@ -145,6 +152,8 @@ class AdminController extends Controller
             'periodeAwal' => 'required|date',
             'periodeAkhir' => 'required|date',
             'tanggalPengumuman' => 'required|max:20',
+            'fakultas_tersedia' => 'nullable|array',
+            'fakultas_tersedia.*' => 'exists:fakultas,kode_fakultas', // Pastikan kode_fakultas valid
         ]);
 
         $ujian = JenisUjian::findOrFail($id);
@@ -156,6 +165,10 @@ class AdminController extends Controller
         $ujian->tanggal_buka_pendaftaran = Carbon::parse($request->input('periodeAwal'))->format('Y-m-d');
         $ujian->tanggal_tutup_pendaftaran = Carbon::parse($request->input('periodeAkhir'))->format('Y-m-d');
         $ujian->waktu_pengumuman = $request->input('tanggalPengumuman');
+        
+        // Menggunakan implode untuk menyimpan array fakultas_tersedia sebagai string di database
+        $ujian->fakultas_tersedia = implode(',', $request->input('fakultas_tersedia', []));
+
         $ujian->save();
 
         return redirect()->route('kelola-ujian')->with('success', 'Ujian berhasil diperbarui.');

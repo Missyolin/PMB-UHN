@@ -62,7 +62,11 @@
                                         <p class="card-text fw-semibold text-secondary px-3">Metode Ujian<br><span class="text-black">{{$ujian->metode_ujian}}</span></p>
                                     </div>
                                     <div class="col">
+                                        @if($ujian->biaya_ujian == 0.00)
+                                        <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Gratis</span></p>
+                                        @else
                                         <p class="card-text fw-semibold text-secondary">Biaya<br><span class="text-black">Rp. {{$ujian->biaya_ujian}}</span></p>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr>
