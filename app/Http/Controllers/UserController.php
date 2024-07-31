@@ -54,59 +54,59 @@ class UserController extends Controller
     }
 
     public function getFormulir($id)
-{
-    Carbon::setLocale('id'); 
+    {
+        Carbon::setLocale('id'); 
 
-    $provinces = Province::all();
-    $regencies = Regency::all();
-    $districts = District::all();
-    $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
-    $asal_sekolah = AsalSekolah::all()->pluck('Nama');
-    $program_studi = ProgramStudi::all();
-    $pekerjaan = Pekerjaan::all();
-    $gereja = Gereja::all();
+        $provinces = Province::all();
+        $regencies = Regency::all();
+        $districts = District::all();
+        $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+        $asal_sekolah = AsalSekolah::all()->pluck('Nama');
+        $program_studi = ProgramStudi::all();
+        $pekerjaan = Pekerjaan::all();
+        $gereja = Gereja::all();
 
-    // Filter jenis ujian berdasarkan ID
-    $selectedUjian = null;
-    foreach ($tahun_ajaran as $tahun) {
-        foreach ($tahun->jenisUjian as $ujian) {
-            if ($ujian->id_jenis_ujian == $id) {
-                $selectedUjian = $ujian;
-                $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
-                $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
-                break 2;
+        // Filter jenis ujian berdasarkan ID
+        $selectedUjian = null;
+        foreach ($tahun_ajaran as $tahun) {
+            foreach ($tahun->jenisUjian as $ujian) {
+                if ($ujian->id_jenis_ujian == $id) {
+                    $selectedUjian = $ujian;
+                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                    break 2;
+                }
             }
         }
+
+        if (!$selectedUjian) {
+            abort(404, 'Ujian tidak ditemukan');
+        }
+
+        // Mendapatkan ID user yang sedang login
+        $userId = Auth::id();
+
+        // Periksa apakah pengguna sudah mendaftar ujian atau belum
+        $userHasRegisteredForExam = PendaftaranUjian::where('id_pendaftar', $userId)
+            ->where('id_ujian', $selectedUjian->id_jenis_ujian)
+            ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $selectedUjian->id_jenis_ujian;
+
+        // Filter daftar fakultas berdasarkan fakultas_tersedia
+        $fakultasTersediaIds = !empty($selectedUjian->fakultas_tersedia) ? explode(',', $selectedUjian->fakultas_tersedia) : [];    
+        $fakultasTersedia = Fakultas::whereIn('kode_fakultas', $fakultasTersediaIds)->get();
+
+        // Ambil halaman formulir
+        $view = view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran', 'id', 'asal_sekolah', 'fakultasTersedia', 'program_studi', 'pekerjaan', 'gereja'));
+
+        // Buat response dari view
+        $response = new Response($view);
+
+        // Atur header untuk mengontrol cache
+        $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+
+        // Kembalikan respons
+        return $response;
     }
-
-    if (!$selectedUjian) {
-        abort(404, 'Ujian tidak ditemukan');
-    }
-
-    // Mendapatkan ID user yang sedang login
-    $userId = Auth::id();
-
-    // Periksa apakah pengguna sudah mendaftar ujian atau belum
-    $userHasRegisteredForExam = PendaftaranUjian::where('id_pendaftar', $userId)
-        ->where('id_ujian', $selectedUjian->id_jenis_ujian)
-        ->exists() || session()->has('registered_exam') && session()->get('registered_exam') == $selectedUjian->id_jenis_ujian;
-
-    // Filter daftar fakultas berdasarkan fakultas_tersedia
-    $fakultasTersediaIds = !empty($selectedUjian->fakultas_tersedia) ? explode(',', $selectedUjian->fakultas_tersedia) : [];    
-    $fakultasTersedia = Fakultas::whereIn('kode_fakultas', $fakultasTersediaIds)->get();
-
-    // Ambil halaman formulir
-    $view = view('User.formulir', compact('provinces', 'regencies', 'districts', 'selectedUjian', 'tahun_ajaran', 'id', 'asal_sekolah', 'fakultasTersedia', 'program_studi', 'pekerjaan', 'gereja'));
-
-    // Buat response dari view
-    $response = new Response($view);
-
-    // Atur header untuk mengontrol cache
-    $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-
-    // Kembalikan respons
-    return $response;
-}
 
     public function simpanFormulir(Request $request)
     {
@@ -366,34 +366,35 @@ class UserController extends Controller
     }
 
     public function getKonfirmasi($id)
-    {
-        $pendaftaran = PendaftaranUjian::where('id_ujian', $id)->get();
-        // Ambil id_pendaftar dari pendaftaran
-        $id_pendaftars = $pendaftaran->pluck('id_pendaftar')->toArray();
+{
+    $id_pendaftar = auth()->user()->id; // Ambil id_pendaftar dari pengguna yang sedang login
 
-        // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
-        $dataPribadi = DataPribadiPendaftar::whereIn('id_pendaftar', $id_pendaftars)
+    $pendaftaran = PendaftaranUjian::where('id_ujian', $id)
+        ->where('id_pendaftar', $id_pendaftar)
+        ->get();
+
+    // Ambil data terkait dari tabel lain berdasarkan id_pendaftar dengan eager loading
+    $dataPribadi = DataPribadiPendaftar::where('id_pendaftar', $id_pendaftar)
         ->where('id_ujian', $id)
         ->get(['nama_lengkap']); // Ambil hanya kolom 'nama_lengkap'
 
-        $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
-        $selectedUjian = null;
-        foreach ($tahun_ajaran as $tahun) {
-            foreach ($tahun->jenisUjian as $ujian) {
-                if ($ujian->id_jenis_ujian == $id) {
-                    $selectedUjian = $ujian;
-                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
-                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
-                    break 2;
-                }
+    $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+    $selectedUjian = null;
+
+    foreach ($tahun_ajaran as $tahun) {
+        foreach ($tahun->jenisUjian as $ujian) {
+            if ($ujian->id_jenis_ujian == $id) {
+                $selectedUjian = $ujian;
+                $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                break 2;
             }
         }
-        $konfirmasiStatus = $pendaftaran->first()->flag_is_formulir_verified == 1;
-
-        return view('User.konfirmasi', compact('selectedUjian', 'dataPribadi', 'konfirmasiStatus', 'pendaftaran'));
     }
 
+    $konfirmasiStatus = $pendaftaran->isNotEmpty() && $pendaftaran->first()->flag_is_formulir_verified == 1;
 
-
+    return view('User.konfirmasi', compact('selectedUjian', 'dataPribadi', 'konfirmasiStatus', 'pendaftaran'));
+}
 
 }

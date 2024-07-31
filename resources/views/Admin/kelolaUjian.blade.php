@@ -514,25 +514,25 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const metodeUjian = document.getElementById('metodeUjianTambah');
-    const biayaUjian = document.getElementById('biayaUjian');
-    const formulir = document.getElementById('formulir');
+        const metodeUjian = document.getElementById('metodeUjianTambah');
+        const biayaUjian = document.getElementById('biayaUjian');
+        const formulir = document.getElementById('formulir');
 
-    // Handler untuk perubahan pilihan metode ujian
-    metodeUjian.addEventListener('change', function () {
-        if (metodeUjian.value === 'Bebas Testing') {
-            biayaUjian.value = 0; // Atur nilai 0 untuk biaya ujian
-        } else {
-            biayaUjian.value = ''; // Kosongkan nilai biaya ujian
-        }
-    });
+        // Handler untuk perubahan pilihan metode ujian
+        metodeUjian.addEventListener('change', function () {
+            if (metodeUjian.value === 'Bebas Testing') {
+                biayaUjian.value = 0; // Atur nilai 0 untuk biaya ujian
+            } else {
+                biayaUjian.value = ''; // Kosongkan nilai biaya ujian
+            }
+        });
 
-    // Handler untuk submit formulir
-    formulir.addEventListener('submit', function (event) {
-        // Aktifkan kembali input biaya ujian sebelum formulir disubmit
-        biayaUjian.disabled = false;
+        // Handler untuk submit formulir
+        formulir.addEventListener('submit', function (event) {
+            // Aktifkan kembali input biaya ujian sebelum formulir disubmit
+            biayaUjian.disabled = false;
+        });
     });
-});
 </script>
 
 <script>

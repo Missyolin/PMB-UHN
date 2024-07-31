@@ -20,7 +20,7 @@
                     <div class="card-body px-5">
                         <h2 class="mb-3">Reset Kata Sandi</h2>
                         <p class="card-text py-2">
-                            Enter your email address and we'll send you an email with instructions to reset your password.
+                            Silahkan masukkan alamat email anda yang sudah terdaftar. Kami akan mengirimkan anda sebuah email dengan instruksi untuk mengubah password anda.
                         </p>
                         <form action="{{route('forgot-password-act')}}" method="post">
                             @csrf

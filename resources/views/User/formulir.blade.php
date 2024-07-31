@@ -70,16 +70,7 @@
             <!-- Hidden field for ID Ujian -->
             <input type="hidden" name="id_ujian" value="{{ $selectedUjian->id_jenis_ujian }}">
             <!-- SCROLLSPY -->
-            <div class="row">
-                <div class="col-4">
-                    <div id="list-example" class="list-group mx-5" style="width:20rem;">
-                        <a class="list-group-item list-group-item-action" href="#dataPribadi">Data Pribadi</a>
-                        <a class="list-group-item list-group-item-action" href="#prodi">Pilihan Program Studi</a>
-                        <a class="list-group-item list-group-item-action" href="#asalSekolahh">Data Asal Sekolah</a>
-                        <a class="list-group-item list-group-item-action" href="#orangtua">Data Orangtua</a>
-                    </div>
-                </div>
-
+            <div class="row d-flex justify-content-center">
                 <div class="col-8">
                     <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                         <h3>

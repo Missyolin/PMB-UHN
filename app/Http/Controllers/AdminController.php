@@ -277,19 +277,19 @@ class AdminController extends Controller
     }
 
     public function exportUjian($id)
-{
-    $jenisUjian = JenisUjian::with('tahunAjaran')->findOrFail($id);
-    
-    if (!$jenisUjian->tahunAjaran) {
-        dd('Tahun ajaran tidak ditemukan untuk jenis ujian ini.');
+    {
+        $jenisUjian = JenisUjian::with('tahunAjaran')->findOrFail($id);
+        
+        if (!$jenisUjian->tahunAjaran) {
+            dd('Tahun ajaran tidak ditemukan untuk jenis ujian ini.');
+        }
+
+        $namaUjian = $jenisUjian->nama_ujian;
+        $tahunAjaran = $jenisUjian->tahunAjaran->tahun_ajaran;
+
+        $fileName = 'Rekap Pendaftar_' . $namaUjian . '_T.A ' . $tahunAjaran . '.xlsx';
+
+        return Excel::download(new PendaftarMultipleExport($id), $fileName);
     }
-
-    $namaUjian = $jenisUjian->nama_ujian;
-    $tahunAjaran = $jenisUjian->tahunAjaran->tahun_ajaran;
-
-    $fileName = 'Rekap Pendaftar_' . $namaUjian . '_T.A ' . $tahunAjaran . '.xlsx';
-
-    return Excel::download(new PendaftarMultipleExport($id), $fileName);
-}
 
 }

@@ -19,17 +19,17 @@ This is Admin panel which can be accessed by Admin PMB UHN only
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toastTrigger = document.getElementById('liveToastBtn');
-        const toastLiveExample = document.getElementById('liveToast');
+  document.addEventListener('DOMContentLoaded', function() {
+      const toastTrigger = document.getElementById('liveToastBtn');
+      const toastLiveExample = document.getElementById('liveToast');
 
-        if (toastTrigger && toastLiveExample) {
-            const toast = new bootstrap.Toast(toastLiveExample);
+      if (toastTrigger && toastLiveExample) {
+          const toast = new bootstrap.Toast(toastLiveExample);
 
-            toastTrigger.addEventListener('click', function() {
-                toast.show();
-            });
-        }
-    });
+          toastTrigger.addEventListener('click', function() {
+              toast.show();
+          });
+      }
+  });
 </script>
 @endsection

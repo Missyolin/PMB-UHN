@@ -26,7 +26,7 @@
                             </div>
                             @else
                             <div class="card-img-overlay text-center text-black mt-4" style="">
-                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">{{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
+                                <h4 class="card-title fw-bolder">{{$ujian->nama_ujian}}<br><span class="fw-light">Gelombang {{$ujian->gelombang_ujian}}</span><br><span class="fw-light"><small>{{$tahun->tahun_mulai}}/{{$tahun->tahun_selesai}}</small></span></h4>
                             </div>
                             @endif
 

@@ -27,6 +27,7 @@ Route::post('/', [accountController::class, 'login'])->name('post-login');
 Route::prefix('/register')->group(function () {
     Route::get('/', function() {return view('User.register');})->name('register')->middleware('guest');
     Route::post('/', [accountController::class, 'register'])->name('post-register');
+    Route::get('/verify-email/{token}', [accountController::class, 'verifyEmail'])->name('verify-email');
 });
     
 // Route for Logout

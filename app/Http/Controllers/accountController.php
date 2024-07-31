@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\PasswordResetToken;
 use App\Mail\ResetPasswordMail;
+use App\Mail\VerifyRegistration;
 
 
 class accountController extends Controller
@@ -19,22 +20,39 @@ class accountController extends Controller
         $request->validate([
             'username' => 'required',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required',
+            'password' => 'required|min:6',
         ]);
 
         // Hash password sebelum menyimpannya
         $username = $request->get('username');
         $email = $request->get('email');
         $password = bcrypt($request->get('password'));
+        $token = \Str::random(60);
 
         // Membuat akun baru dengan password yang sudah di-hash
-        $account = User::create([
+        $user = User::create([
             'username' => $username,
             'email' => $email,
             'password' => $password,
+            'remember_token' => $token,
         ]);
 
-        return redirect()->route('login');
+        // Mengirim email verifikasi
+        Mail::to($request->email)->send(new VerifyRegistration($token));
+
+        return view('auth.registrationAnnouncement')->with('success', 'Silakan periksa email Anda untuk verifikasi.');
+    }
+
+    public function verifyEmail($token)
+    {
+        $user = User::where('remember_token', $token)->firstOrFail();
+
+        // Tandai email sebagai terverifikasi
+        $user->email_verified_at = now();
+        $user->remember_token = null; // Hapus token setelah digunakan
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Email Anda telah diverifikasi. Silakan login.');
     }
 
     public function login(Request $request)
@@ -45,20 +63,26 @@ class accountController extends Controller
         ]);
 
         try {
-            $credentials = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
-            if ($credentials && Hash::check($request->password, $credentials->password)) {
-                Auth::attempt(['email' => $request->email, 'password' => $request->password]);
-                if (Auth::user()->username === 'Admin') {
-                    return redirect()->route('dashboard-admin');
-                } else {
-                    return redirect()->route('dashboard');
+            if ($user) {
+                if ($user->role === 'user' && $user->email_verified_at === null) {
+                    return redirect()->route('login')->with('error', 'Email Anda belum diverifikasi. Silakan periksa email Anda untuk verifikasi.');
+                }
+
+                if (Hash::check($request->password, $user->password)) {
+                    Auth::login($user);
+                    if ($user->username === 'Admin') {
+                        return redirect()->route('dashboard-admin');
+                    } else {
+                        return redirect()->route('dashboard');
+                    }
                 }
             }
 
             return redirect()->route('login')->with('error', 'Kredensial tidak tepat!');
-        } catch (ErrorException $e) {
-            return redirect()->route('login')->with('error', 'Kredensial tidak tepat!');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Terjadi kesalahan, silakan coba lagi.');
         }
     }
 
