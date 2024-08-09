@@ -23,6 +23,7 @@ class JenisUjianSeeder extends Seeder
                 'jenis_ujian' => 'Non-Kedokteran',
                 'metode_ujian' => 'Bebas Testing',
                 'biaya_ujian' => 0,
+                'fakultas_tersedia' => 'EK',
                 'tanggal_buka_pendaftaran' => '2024-06-10',
                 'tanggal_tutup_pendaftaran' => '2024-06-14',
                 'waktu_pengumuman' => 'Realtime',

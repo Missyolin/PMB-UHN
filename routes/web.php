@@ -46,10 +46,11 @@ Route::post('/forgot-password-validation-act', [accountController::class, 'forgo
 Route::middleware(['web','auth'])->group(function() {
     // USER
     Route::get('/dashboard-pmb', [UserController::class, 'getDashboardPMB'])->name('dashboard');
+    Route::get('/payment-form/{id_ujian}', [UserController::class, 'getPaymentForm'])->name('payment-form');
     Route::get('/pembelian-formulir', function() { return view('User.payment');})->name('pembelian-formulir');
     Route::get('/formulir-pmb/{id_ujian}', [UserController::class, 'getFormulir'])
     ->name('formulir-pmb')
-    ->middleware('web','check.registration');
+    ->middleware('web','check.registration', 'payment.form');
 
     Route::post('/simpan-formulir-pmb', [UserController::class, 'simpanFormulir'])->name('save-formulir-pmb');
     Route::get('/preview-formulir/{id}', [UserController::class, 'previewFormulir'])->name('preview-formulir');

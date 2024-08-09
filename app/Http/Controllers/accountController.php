@@ -16,18 +16,27 @@ class accountController extends Controller
 {
     public function register(Request $request)
     {
+        
+        $customMessage = [
+            'username.required' => 'username tidak boleh kosong',
+            'email.required' => 'email tidak boleh kosong',
+            'password.required' => 'password tidak boleh kosong',
+            'email.exists' => 'Email sudah terdaftar',
+            'password.min' => 'Password minimim 6 karakter',
+        ];
         // Validasi input pengguna
         $request->validate([
             'username' => 'required',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|min:6',
-        ]);
-
+        ], $customMessage);
+        
         // Hash password sebelum menyimpannya
         $username = $request->get('username');
         $email = $request->get('email');
         $password = bcrypt($request->get('password'));
         $token = \Str::random(60);
+
 
         // Membuat akun baru dengan password yang sudah di-hash
         $user = User::create([

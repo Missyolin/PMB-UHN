@@ -53,6 +53,25 @@ class UserController extends Controller
         $this->middleware('check.registration:id_ujian')->only('getFormulir');
     }
 
+    public function getPaymentForm($id)
+    {
+        Carbon::setLocale('id'); 
+        $tahun_ajaran = TahunAjaran::with('jenisUjian')->get();
+        $selectedUjian = null;
+        foreach ($tahun_ajaran as $tahun) {
+            foreach ($tahun->jenisUjian as $ujian) {
+                if ($ujian->id_jenis_ujian == $id) {
+                    $selectedUjian = $ujian;
+                    $selectedUjian->tanggal_buka_pendaftaran_formatted = Carbon::parse($ujian->tanggal_buka_pendaftaran)->translatedFormat('j F Y');
+                    $selectedUjian->tanggal_tutup_pendaftaran_formatted = Carbon::parse($ujian->tanggal_tutup_pendaftaran)->translatedFormat('j F Y');
+                    break 2;
+                }
+            }
+        }
+        
+        return view('User.paymentForm', compact('selectedUjian'));
+    }
+
     public function getFormulir($id)
     {
         Carbon::setLocale('id'); 
